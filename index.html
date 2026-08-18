@@ -281,7 +281,7 @@
         .new-release-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
         .new-release-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 全球播放排行前 #12 專區 */
+        /* 本地播放排行前 #12 專區 */
         .global12-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -714,11 +714,11 @@
 
     <!-- 主要內容區 -->
     <main>
-        <!-- 1. 最上面：全球 NO.1 播放量最高的歌（附觀看次數） -->
+        <!-- 1. 最上面：本地 NO.1 播放量最高的歌（附觀看次數） -->
         <div class="hero-banner" id="hero-banner-box">
             <img class="hero-cover" id="hero-cover" src="" alt="封面">
             <div class="hero-content">
-                <div class="hero-tag" id="hero-tag-text">🔥 全球 NO.1 播放量最高</div>
+                <div class="hero-tag" id="hero-tag-text">🔥 本地 NO.1 播放量最高</div>
                 <div class="hero-title" id="hero-title">載入中...</div>
                 <div class="hero-desc" id="hero-desc">總播放次數：<span id="hero-play-count">0</span> 次</div>
                 <button class="hero-btn" onclick="openModal(); playSong(heroSongIndex);">
@@ -734,9 +734,9 @@
             <div class="new-release-grid" id="new-release-container"></div>
         </section>
 
-        <!-- 3. 全球播放排行前 #12 -->
+        <!-- 3. 本地播放排行前 #12 -->
         <section style="margin-bottom: 35px;">
-            <h3 id="section-global12">🌍 全球播放排行前 #12</h3>
+            <h3 id="section-global12">🏠 本地播放排行前 #12</h3>
             <div class="global12-grid" id="global12-container"></div>
         </section>
 
@@ -897,27 +897,8 @@
 
     <audio id="audio-player"></audio>
 
-    <!-- Firebase SDK 引入與全網觀看次數同步邏輯 -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, get, child, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        // Firebase 設定
-        const firebaseConfig = {
-            apiKey: "AIzaSyBynyrWLi_RNJRuX7kzsXOE10FaPSwFbeM",
-            authDomain: "frmusic-998e3.firebaseapp.com",
-            databaseURL: "https://frmusic-998e3-default-rtdb.firebaseio.com",
-            projectId: "frmusic-998e3",
-            storageBucket: "frmusic-998e3.firebasestorage.app",
-            messagingSenderId: "727501043112",
-            appId: "1:727501043112:web:f7580c10fcfee8982dd99d",
-            measurementId: "G-B8T8C68R2K"
-        };
-
-        // 初始化 Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
+    <!-- 音樂平台核心邏輯 (改用 localStorage 儲存播放次數) -->
+    <script>
         // ==========================================
         // 防止查看原始碼與保護機制
         // ==========================================
@@ -940,7 +921,7 @@
         // 音樂平台核心邏輯
         // ==========================================
         let playlist = [];
-        let playCounts = {}; // 從 Firebase 讀取的全球播放次數
+        let playCounts = {}; // 從 localStorage 讀取的本地播放次數
         let currentIndex = 0;
         let heroSongIndex = 0;
         let isPlaying = false;
@@ -955,11 +936,11 @@
                 pageTitle: "FR MUSIC - 專業頂級音樂平台",
                 searchPlaceholder: "搜尋歌曲、曲風...",
                 hotTitle: "搜尋結果",
-                heroTag: "🔥 全球 NO.1 播放量最高單曲",
+                heroTag: "🔥 本地 NO.1 播放量最高單曲",
                 heroDesc: "總播放次數：",
                 btnPlay: "立即播放",
                 sectionNewRelease: "✨ 全新上架",
-                sectionGlobal12: "🌍 全球播放排行前 #12",
+                sectionGlobal12: "🏠 本地播放排行前 #12",
                 sectionYouMayLike: "💖 你可能會喜歡",
                 sectionAllSongs: "🎶 為您推薦 (隨機)",
                 playerReady: "準備就緒",
@@ -978,11 +959,11 @@
                 pageTitle: "FR MUSIC - Professional Music Platform",
                 searchPlaceholder: "Search songs, genres...",
                 hotTitle: "Search Results",
-                heroTag: "🔥 Global NO.1 Most Streamed Track",
+                heroTag: "🔥 Local NO.1 Most Streamed Track",
                 heroDesc: "Total plays: ",
                 btnPlay: "Play Now",
                 sectionNewRelease: "✨ New Releases",
-                sectionGlobal12: "🌍 Global Streaming Top #12",
+                sectionGlobal12: "🏠 Local Streaming Top #12",
                 sectionYouMayLike: "💖 You May Like",
                 sectionAllSongs: "🎶 Recommended For You (Random)",
                 playerReady: "Ready",
@@ -1001,11 +982,11 @@
                 pageTitle: "FR MUSIC - プロフェッショナル音楽プラットフォーム",
                 searchPlaceholder: "曲名やジャンルを検索...",
                 hotTitle: "検索結果",
-                heroTag: "🔥 グローバル NO.1 再生回数最多トラック",
+                heroTag: "🔥 ローカル NO.1 再生回数最多トラック",
                 heroDesc: "総再生回数：",
                 btnPlay: "今すぐ再生",
                 sectionNewRelease: "✨ 新着リリース",
-                sectionGlobal12: "🌍 グローバル再生トップ #12",
+                sectionGlobal12: "🏠 ローカル再生トップ #12",
                 sectionYouMayLike: "💖 おすすめの楽曲",
                 sectionAllSongs: "🎶 あなたへのおすすめ (ランダム)",
                 playerReady: "準備完了",
@@ -1024,11 +1005,11 @@
                 pageTitle: "FR MUSIC - 전문 음악 플랫폼",
                 searchPlaceholder: "노래, 장르 검색...",
                 hotTitle: "검색 결과",
-                heroTag: "🔥 글로벌 NO.1 최다 재생 트랙",
+                heroTag: "🔥 로컬 NO.1 최다 재생 트랙",
                 heroDesc: "총 재생 횟수: ",
                 btnPlay: "지금 재생",
                 sectionNewRelease: "✨ 신규 발매",
-                sectionGlobal12: "🌍 글로벌 스트리밍 TOP #12",
+                sectionGlobal12: "🏠 로컬 스트리밍 TOP #12",
                 sectionYouMayLike: "💖 추천 음악",
                 sectionAllSongs: "🎶 추천 음원 (랜덤)",
                 playerReady: "준비됨",
@@ -1065,47 +1046,42 @@
         const playSvg = '<path d="M8 5v14l11-7z"/>';
         const pauseSvg = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
-        // 監聽 Firebase 雲端播放次數，實現全網即時同步更新
-        function listenToPlayCounts() {
-            const playCountsRef = ref(db, 'playCounts');
-            onValue(playCountsRef, (snapshot) => {
-                if (snapshot.exists()) {
-                    playCounts = snapshot.val() || {};
+        // 從 localStorage 讀取本地播放次數
+        function fetchPlayCounts() {
+            try {
+                const savedCounts = localStorage.getItem('fr_music_local_play_counts');
+                if (savedCounts) {
+                    playCounts = JSON.parse(savedCounts);
                 } else {
                     playCounts = {};
                 }
-                if (playlist.length > 0) {
-                    refreshUI();
-                }
-            }, (error) => {
-                console.error('監聽 Firebase 播放次數失敗:', error);
-            });
+            } catch (error) {
+                console.error('從 localStorage 讀取播放次數失敗:', error);
+                playCounts = {};
+            }
         }
 
-        // 更新 Firebase 中的單曲播放次數 (將網址轉換為安全的 Firebase Key)
-        async function incrementGlobalPlayCount(songUrl) {
-            const safeKey = encodeURIComponent(songUrl).replace(/\./g, '%2E');
-            
+        // 更新單曲播放次數並寫入 localStorage
+        function incrementGlobalPlayCount(songUrl) {
             try {
                 const currentCount = playCounts[songUrl] || 0;
                 const newCount = currentCount + 1;
                 playCounts[songUrl] = newCount;
 
-                // 寫入 Firebase 資料庫
-                const updates = {};
-                updates['/playCounts/' + safeKey] = newCount;
-                await update(ref(db), updates);
+                localStorage.setItem('fr_music_local_play_counts', JSON.stringify(playCounts));
+                refreshUI();
             } catch (error) {
-                console.error('更新 Firebase 播放次數失敗:', error);
+                console.error('更新本地播放次數失敗:', error);
             }
         }
 
         async function loadMusicData() {
             try {
+                fetchPlayCounts();
                 const response = await fetch(JSON_URL);
                 playlist = await response.json();
                 
-                listenToPlayCounts(); // 啟動即時雲端監聽
+                refreshUI();
                 
                 if (playlist.length > 0 && !audio.src) {
                     const song = playlist[0];
@@ -1154,7 +1130,7 @@
             document.getElementById('lbl-bgtheme').innerText = t.lblBgTheme;
             document.getElementById('btn-cancel').innerText = t.btnCancel;
             document.getElementById('btn-save').innerText = t.btnSave;
-            if(playlist.length > 0) { refreshUI(); }
+            refreshUI();
         }
 
         loadUserSettings();
@@ -1226,7 +1202,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 最上方：全球 NO.1 播放量最高的歌
+        // 最上方：本地 NO.1 播放量最高的歌
         function setupHeroSection() {
             if (playlist.length === 0) return;
             let mostPlayedIndex = 0;
@@ -1272,7 +1248,7 @@
             });
         }
 
-        // 全球播放排行前 #12
+        // 本地播放排行前 #12
         function renderGlobal12() {
             const container = document.getElementById('global12-container');
             if (!container) return;
@@ -1443,7 +1419,7 @@
                 const percent = (audio.currentTime / audio.duration) * 100;
                 updateProgressUI(percent);
                 
-                // 當播放超過 50% 時，記錄一次全球播放次數並寫入 Firebase
+                // 當播放超過 50% 時，記錄一次本地播放次數並寫入 localStorage
                 if (percent >= 50 && !hasCountedCurrentSong) {
                     hasCountedCurrentSong = true;
                     const song = playlist[currentIndex];
