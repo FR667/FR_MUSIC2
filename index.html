@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title id="page-title">FR MUSIC - 專業音樂串流平台</title>
+    <!-- 網站標籤圖示 (Favicon) -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --surface-color: #121212;
+            --surface-hover: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #a7a7a7;
+            --accent: #fa243c;
+            --border-color: #282828;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 110px;
+            transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-x: hidden;
+        }
+
+        /* 頂部導覽列 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .logo img {
+            width: 34px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo img.rotate-animate {
+            transform: rotate(-360deg) scale(1.1);
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+            max-width: 380px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border-radius: 500px;
+            border: 1px solid transparent;
+            background-color: #242424;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent);
+            background-color: #121212;
+            box-shadow: 0 0 15px rgba(250, 36, 60, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 15px;
+            height: 15px;
+        }
+
+        /* 搜尋即時下拉清單 */
+        .search-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 100%;
+            background: #181818;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            display: none;
+            z-index: 200;
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .search-dropdown.show { display: block; }
+        .dropdown-title { padding: 6px 16px; font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-result-item:hover { background: var(--surface-hover); }
+        .search-result-thumb { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+        .search-result-info { min-width: 0; flex: 1; }
+        .search-result-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .search-result-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .settings-btn:hover { color: var(--text-primary); background: var(--surface-hover); transform: rotate(45deg); }
+
+        /* 主要內容區 */
+        main {
+            flex: 1;
+            padding: 30px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, #2b0c11 0%, #120507 100%);
+            border-radius: 20px;
+            padding: 35px 40px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(250, 36, 60, 0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            background: var(--accent);
+            opacity: 0.12;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+        }
+
+        .hero-cover {
+            width: 150px;
+            height: 150px;
+            border-radius: 14px;
+            object-fit: cover;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            flex-shrink: 0;
+        }
+
+        .hero-content { flex: 1; }
+
+        .hero-tag {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .hero-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 500px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(250, 36, 60, 0.4);
+        }
+
+        .hero-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+
+        section h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        /* 全新上架專區 (最多15首) */
+        .new-release-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .new-release-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .new-release-item:hover { background: var(--surface-hover); border-color: var(--border-color); }
+        .new-release-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .new-release-info { flex: 1; min-width: 0; }
+        .new-release-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .new-release-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* 全球播放排行前 #12 專區 */
+        .global12-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+        .global12-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .global12-item:hover { background: var(--surface-hover); border-color: var(--border-color); }
+        .global12-rank {
+            font-size: 16px;
+            font-weight: 800;
+            width: 32px;
+            text-align: center;
+            color: #38bdf8;
+        }
+        .global12-item:nth-child(1) .global12-rank { color: #ffd700; }
+        .global12-item:nth-child(2) .global12-rank { color: #c0c0c0; }
+        .global12-item:nth-child(3) .global12-rank { color: #cd7f32; }
+
+        .global12-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .global12-info { flex: 1; min-width: 0; }
+        .global12-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .global12-count { font-size: 11px; color: var(--accent); font-weight: 500; }
+
+        /* 你可能會喜歡網格 */
+        .grid-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .album-card {
+            background-color: var(--surface-color);
+            padding: 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .album-card:hover {
+            background-color: var(--surface-hover);
+            transform: translateY(-4px);
+            border-color: var(--border-color);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+        }
+
+        .album-card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .album-card .title { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .album-card .desc { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .album-card .play-count-tag { font-size: 11px; color: var(--accent); margin-top: 6px; font-weight: 500; }
+
+        /* 為您推薦 (隨機) 清單 */
+        .song-list { display: flex; flex-direction: column; gap: 8px; }
+        .song-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+        }
+        .song-item:hover { background-color: var(--surface-hover); border-color: var(--border-color); }
+        .song-info { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
+        .song-thumb { width: 42px; height: 42px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+        .song-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-artist { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .song-right-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0;
+        }
+        .song-play-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .action-btn:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--bg-color); }
+
+        /* 底部常駐播放器 */
+        .bottom-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 88px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 90;
+        }
+
+        .player-left { display: flex; align-items: center; gap: 12px; width: 260px; cursor: pointer; min-width: 0; }
+        .player-left img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .player-meta { min-width: 0; flex: 1; }
+        .player-meta .title { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-meta .status { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .player-center { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 550px; padding: 0 10px; }
+        .player-controls { display: flex; align-items: center; gap: 16px; }
+        .ctrl-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .ctrl-btn:hover { color: var(--text-primary); transform: scale(1.1); }
+        .ctrl-btn.active { color: var(--accent); }
+
+        .play-pause-btn {
+            background: var(--text-primary);
+            color: var(--bg-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .play-pause-btn:hover { transform: scale(1.1); }
+
+        .progress-container { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 11px; color: var(--text-secondary); }
+        .progress-bar { flex: 1; height: 6px; background: #4d4d4d; border-radius: 3px; position: relative; cursor: pointer; padding: 4px 0; }
+        .progress-track { width: 100%; height: 4px; background: #4d4d4d; border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 2px; width: 0%; pointer-events: none; }
+        .progress-bar:hover .progress-filled { background: var(--accent); }
+
+        .player-right { width: 220px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+        .volume-slider { width: 90px; accent-color: var(--text-primary); cursor: pointer; }
+
+        /* 全螢幕播放 Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+        .modal-blur-bg {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            background-size: cover;
+            background-position: center;
+            filter: blur(55px) brightness(0.4);
+            transform: scale(1.1);
+            z-index: 1;
+            transition: background-image 0.6s ease;
+        }
+
+        .modal-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .carplay-container {
+            width: 90%;
+            max-width: 850px;
+            background: rgba(18, 18, 22, 0.7);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 10;
+            transform: scale(0.95) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .modal-overlay.open .carplay-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s;
+        }
+        .close-modal-btn:hover { background: rgba(255,255,255,0.25); color: var(--text-primary); }
+
+        .carplay-left {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            flex-shrink: 0;
+        }
+
+        .carplay-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        }
+
+        /* 等化器動畫 */
+        .visualizer-bars {
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 30px;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 4px 10px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .v-bar {
+            width: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+            height: 6px;
+            transition: height 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 8px var(--accent);
+        }
+
+        .carplay-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .carplay-song-title {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .carplay-song-artist {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .carplay-controls-area {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+        }
+
+        .carplay-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        #audio-player { display: none; }
+
+        /* 手機版極致優化 */
+        @media(max-width: 768px) {
+            header { padding: 12px 16px; }
+            .logo { font-size: 17px; }
+            .logo img { width: 30px; height: 30px; }
+            .search-container { max-width: none; flex: 1; }
+            .search-bar { padding: 8px 12px 8px 34px; font-size: 13px; }
+            
+            main { padding: 16px; }
+            .hero-banner { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 20px 16px; 
+                gap: 16px; 
+                border-radius: 16px;
+                margin-bottom: 25px;
+            }
+            .hero-cover { width: 110px; height: 110px; border-radius: 12px; }
+            .hero-title { font-size: 20px; }
+            .hero-desc { font-size: 12px; margin-bottom: 15px; }
+            .hero-btn { padding: 8px 20px; font-size: 12px; }
+            .hero-tag { justify-content: center; font-size: 11px; }
+
+            section h3 { font-size: 17px; margin-bottom: 12px; }
+            .new-release-grid, .global12-grid { grid-template-columns: 1fr; }
+            .grid-section { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
+            .album-card { padding: 10px; border-radius: 12px; }
+            .album-card .title { font-size: 13px; }
+            .album-card .desc { font-size: 11px; }
+
+            .song-item { padding: 8px 12px; }
+            .song-thumb { width: 38px; height: 38px; }
+            .song-title { font-size: 13px; }
+            .song-artist { font-size: 11px; }
+            .song-play-count { display: none; }
+            .action-btn { padding: 5px 12px; font-size: 11px; }
+
+            .bottom-player { height: 76px; padding: 0 12px; }
+            .player-left { width: 160px; gap: 10px; }
+            .player-left img { width: 44px; height: 44px; border-radius: 6px; }
+            .player-meta .title { font-size: 12px; }
+            .player-meta .status { font-size: 10px; }
+            .player-center { max-width: none; flex: 1; padding: 0 4px; gap: 4px; }
+            .player-controls { gap: 12px; }
+            .play-pause-btn { width: 32px; height: 32px; }
+            .ctrl-btn svg { width: 16px; height: 16px; }
+            .player-right { display: none; }
+
+            .carplay-container {
+                flex-direction: column;
+                width: 95%;
+                padding: 24px 16px;
+                gap: 20px;
+                max-height: 85vh;
+                border-radius: 20px;
+            }
+            .carplay-left { width: 180px; height: 180px; }
+            .carplay-song-title { font-size: 18px; text-align: center; }
+            .carplay-song-artist { font-size: 13px; text-align: center; margin-bottom: 15px; }
+            .carplay-right { width: 100%; align-items: center; }
+            .carplay-controls { justify-content: space-around; width: 100%; gap: 0; }
+            .close-modal-btn { top: 12px; right: 12px; width: 28px; height: 28px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 頂部導覽列 -->
+    <header>
+        <div class="logo" id="brand-title" onclick="onLogoClick()">
+            <img src="https://i.ibb.co/m54LF470/Background-Eraser-20260816-214356376.png" id="logo-img" alt="Logo">
+            <span id="nav-brand-text">FR MUSIC</span>
+        </div>
+        
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="search-input" class="search-bar" placeholder="搜尋歌曲、曲風..." oninput="onSearchInput(this.value)">
+            
+            <!-- 搜尋結果下拉清單 -->
+            <div class="search-dropdown" id="search-dropdown">
+                <div class="dropdown-title" id="dd-title">搜尋結果</div>
+                <div id="search-results-list"></div>
+            </div>
+        </div>
+
+        <button class="settings-btn" onclick="openSettings()" title="網站設定">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main>
+        <!-- 1. 最上面：全球 NO.1 播放量最高的歌（附觀看次數） -->
+        <div class="hero-banner" id="hero-banner-box">
+            <img class="hero-cover" id="hero-cover" src="" alt="封面">
+            <div class="hero-content">
+                <div class="hero-tag" id="hero-tag-text">🔥 全球 NO.1 播放量最高</div>
+                <div class="hero-title" id="hero-title">載入中...</div>
+                <div class="hero-desc" id="hero-desc">總播放次數：<span id="hero-play-count">0</span> 次</div>
+                <button class="hero-btn" onclick="openModal(); playSong(heroSongIndex);">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <span id="btn-play-now">立即播放</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 2. 全新上架 (最多15首) -->
+        <section style="margin-bottom: 35px;">
+            <h3 id="section-new-release">✨ 最新上架</h3>
+            <div class="new-release-grid" id="new-release-container"></div>
+        </section>
+
+        <!-- 3. 全球播放排行前 #12 -->
+        <section style="margin-bottom: 35px;">
+            <h3 id="section-global12">🌍 全球播放排行前 #12</h3>
+            <div class="global12-grid" id="global12-container"></div>
+        </section>
+
+        <!-- 4. 你可能會喜歡 -->
+        <section style="margin-bottom: 35px;">
+            <h3 id="section-you-may-like">💖 你可能會喜歡</h3>
+            <div class="grid-section" id="grid-section-container"></div>
+        </section>
+
+        <!-- 5. 為您推薦 (隨機) -->
+        <section>
+            <h3 id="section-all-songs">🎶 為您推薦</h3>
+            <div class="song-list" id="song-list-container"></div>
+        </section>
+    </main>
+
+    <!-- 底部常駐播放器 -->
+    <div class="bottom-player">
+        <div class="player-left" onclick="openModal()" title="展開全螢幕播放">
+            <img id="player-thumb" src="" alt="封面">
+            <div class="player-meta">
+                <div class="title" id="player-title">尚未選擇歌曲</div>
+                <div class="status" id="player-status">準備就緒</div>
+            </div>
+        </div>
+
+        <div class="player-center">
+            <div class="player-controls">
+                <button class="ctrl-btn shuffle-trigger" onclick="toggleShuffle()" title="隨機播放">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                </button>
+                <button class="ctrl-btn" onclick="prevSong()" title="上一首">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                </button>
+                <button class="ctrl-btn" onclick="skipTime(-10)" title="快退 10 秒">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.99 5V1L6 7l5.99 6v-4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg>
+                </button>
+                <button class="play-pause-btn" onclick="togglePlayPause()">
+                    <svg id="play-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <button class="ctrl-btn" onclick="skipTime(10)" title="快轉 10 秒">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5V1l5.99 6L12 13v-4c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg>
+                </button>
+                <button class="ctrl-btn" onclick="nextSong()" title="下一首">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM5 18l8.5-6L5 6v12z"/></svg>
+                </button>
+                <button class="ctrl-btn repeat-trigger" onclick="toggleRepeat()" title="單曲循環">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                </button>
+            </div>
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-track">
+                        <div class="progress-filled" id="progress-filled"></div>
+                    </div>
+                </div>
+                <span id="duration-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="player-right">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)">
+        </div>
+    </div>
+
+    <!-- 全螢幕播放 Modal -->
+    <div class="modal-overlay" id="now-playing-modal">
+        <div class="modal-blur-bg" id="modal-blur-bg"></div>
+        <div class="carplay-container">
+            <button class="close-modal-btn" onclick="closeModal()">×</button>
+            
+            <div class="carplay-left">
+                <img class="carplay-cover" id="modal-cover" src="" alt="封面">
+                <div class="visualizer-bars" id="visualizer-bars">
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                </div>
+            </div>
+
+            <div class="carplay-right">
+                <div class="carplay-song-title" id="modal-song-title">歌曲名稱</div>
+                <div class="carplay-song-artist" id="modal-song-artist">作者</div>
+
+                <div class="carplay-controls-area">
+                    <div class="progress-container" style="width: 100%;">
+                        <span id="modal-current-time">0:00</span>
+                        <div class="progress-bar" id="modal-progress-bar">
+                            <div class="progress-track">
+                                <div class="progress-filled" id="modal-progress-filled"></div>
+                            </div>
+                        </div>
+                        <span id="modal-duration-time">0:00</span>
+                    </div>
+
+                    <div class="carplay-controls">
+                        <button class="ctrl-btn shuffle-trigger" onclick="toggleShuffle()" title="隨機播放">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                        </button>
+                        <button class="ctrl-btn" onclick="prevSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+                        <button class="ctrl-btn" onclick="skipTime(-10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.99 5V1L6 7l5.99 6v-4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
+                        <button class="play-pause-btn" style="width:42px; height:42px;" onclick="togglePlayPause()">
+                            <svg id="modal-play-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <button class="ctrl-btn" onclick="skipTime(10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5V1l5.99 6L12 13v-4c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
+                        <button class="ctrl-btn" onclick="nextSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM5 18l8.5-6L5 6v12z"/></svg></button>
+                        <button class="ctrl-btn repeat-trigger" onclick="toggleRepeat()" title="單曲循環">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 設定視窗 Modal -->
+    <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
+        <div class="carplay-container" style="max-width: 380px; display: block; text-align: left;">
+            <button class="close-modal-btn" onclick="closeSettings()">×</button>
+            <h3 id="settings-title" style="margin-bottom: 18px;">設定</h3>
+            
+            <div style="margin-bottom: 14px;">
+                <label id="lbl-language" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">語言 (Language)</label>
+                <select id="setting-language" style="width:100%; padding:9px; background:#222; border:1px solid var(--border-color); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
+                    <option value="zh-TW">繁體中文</option>
+                    <option value="en">English (英文)</option>
+                    <option value="ja">日本語 (日文)</option>
+                    <option value="ko">한국어 (韓文)</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 22px;">
+                <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景色系 (12種風格)</label>
+                <select id="setting-bg-theme" style="width:100%; padding:9px; background:#222; border:1px solid var(--border-color); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
+                    <option value="#050505">1. 極黑沉浸 (預設)</option>
+                    <option value="#0f172a">2. 深邃夜空藍</option>
+                    <option value="#180f2a">3. 神祕暗夜紫</option>
+                    <option value="#1a0505">4. 暗紅賽博風</option>
+                    <option value="#051a14">5. 森林極光綠</option>
+                    <option value="#1c1917">6. 溫暖木質灰</option>
+                    <option value="#221100">7. 琥珀黃金夜</option>
+                    <option value="#001524">8. 深海深藍</option>
+                    <option value="#1b1224">9. 迷幻紫羅蘭</option>
+                    <option value="#0d1b1e">10. 冰川極地青</option>
+                    <option value="#240e15">11. 暮光玫瑰紅</option>
+                    <option value="#141414">12. 碳纖極簡黑</option>
+                </select>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:8px;">
+                <button id="btn-cancel" onclick="closeSettings()" style="padding:8px 16px; background:#333; border:none; color:#fff; border-radius:8px; cursor:pointer; font-size:13px;">取消</button>
+                <button id="btn-save" onclick="saveSettings()" style="padding:8px 16px; background:var(--accent); border:none; color:#fff; border-radius:8px; cursor:pointer; font-size:13px;">儲存設定</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <!-- Firebase SDK 引入與全網觀看次數同步邏輯 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, get, child, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Firebase 設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyBynyrWLi_RNJRuX7kzsXOE10FaPSwFbeM",
+            authDomain: "frmusic-998e3.firebaseapp.com",
+            databaseURL: "https://frmusic-998e3-default-rtdb.firebaseio.com",
+            projectId: "frmusic-998e3",
+            storageBucket: "frmusic-998e3.firebasestorage.app",
+            messagingSenderId: "727501043112",
+            appId: "1:727501043112:web:f7580c10fcfee8982dd99d",
+            measurementId: "G-B8T8C68R2K"
+        };
+
+        // 初始化 Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // ==========================================
+        // 防止查看原始碼與保護機制
+        // ==========================================
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (
+                e.keyCode === 123 ||
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) ||
+                (e.ctrlKey && e.keyCode === 85)
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // ==========================================
+        // 音樂平台核心邏輯
+        // ==========================================
+        let playlist = [];
+        let playCounts = {}; // 從 Firebase 讀取的全球播放次數
+        let currentIndex = 0;
+        let heroSongIndex = 0;
+        let isPlaying = false;
+        let isShuffle = false;
+        let isRepeat = false;
+        let hasCountedCurrentSong = false;
+
+        const JSON_URL = "https://raw.githubusercontent.com/FR667/FR_MUSIC/refs/heads/main/data.json";
+
+        const translations = {
+            'zh-TW': {
+                pageTitle: "FR MUSIC - 專業頂級音樂平台",
+                searchPlaceholder: "搜尋歌曲、曲風...",
+                hotTitle: "搜尋結果",
+                heroTag: "🔥 全球 NO.1 播放量最高單曲",
+                heroDesc: "總播放次數：",
+                btnPlay: "立即播放",
+                sectionNewRelease: "✨ 全新上架",
+                sectionGlobal12: "🌍 全球播放排行前 #12",
+                sectionYouMayLike: "💖 你可能會喜歡",
+                sectionAllSongs: "🎶 為您推薦 (隨機)",
+                playerReady: "準備就緒",
+                playerPlaying: "FR MUSIC 播放中",
+                playerPaused: "已暫停",
+                settingsTitle: "網站設定",
+                lblLang: "語言 (Language)",
+                lblBgTheme: "背景色系 (12種風格)",
+                btnCancel: "取消",
+                btnSave: "儲存設定",
+                notFound: "找不到符合條件的歌曲",
+                btnPlayList: "播放",
+                playCountText: "點播次數"
+            },
+            'en': {
+                pageTitle: "FR MUSIC - Professional Music Platform",
+                searchPlaceholder: "Search songs, genres...",
+                hotTitle: "Search Results",
+                heroTag: "🔥 Global NO.1 Most Streamed Track",
+                heroDesc: "Total plays: ",
+                btnPlay: "Play Now",
+                sectionNewRelease: "✨ New Releases",
+                sectionGlobal12: "🌍 Global Streaming Top #12",
+                sectionYouMayLike: "💖 You May Like",
+                sectionAllSongs: "🎶 Recommended For You (Random)",
+                playerReady: "Ready",
+                playerPlaying: "Playing...",
+                playerPaused: "Paused",
+                settingsTitle: "Website Settings",
+                lblLang: "Language",
+                lblBgTheme: "Background Theme (12 Styles)",
+                btnCancel: "Cancel",
+                btnSave: "Save Settings",
+                notFound: "No matching songs found",
+                btnPlayList: "Play",
+                playCountText: "Plays"
+            },
+            'ja': {
+                pageTitle: "FR MUSIC - プロフェッショナル音楽プラットフォーム",
+                searchPlaceholder: "曲名やジャンルを検索...",
+                hotTitle: "検索結果",
+                heroTag: "🔥 グローバル NO.1 再生回数最多トラック",
+                heroDesc: "総再生回数：",
+                btnPlay: "今すぐ再生",
+                sectionNewRelease: "✨ 新着リリース",
+                sectionGlobal12: "🌍 グローバル再生トップ #12",
+                sectionYouMayLike: "💖 おすすめの楽曲",
+                sectionAllSongs: "🎶 あなたへのおすすめ (ランダム)",
+                playerReady: "準備完了",
+                playerPlaying: "再生中...",
+                playerPaused: "一時停止中",
+                settingsTitle: "サイト設定",
+                lblLang: "言語 (Language)",
+                lblBgTheme: "背景テーマ (12種類)",
+                btnCancel: "キャンセル",
+                btnSave: "保存",
+                notFound: "一致する曲が見つかりませんでした",
+                btnPlayList: "再生",
+                playCountText: "再生回数"
+            },
+            'ko': {
+                pageTitle: "FR MUSIC - 전문 음악 플랫폼",
+                searchPlaceholder: "노래, 장르 검색...",
+                hotTitle: "검색 결과",
+                heroTag: "🔥 글로벌 NO.1 최다 재생 트랙",
+                heroDesc: "총 재생 횟수: ",
+                btnPlay: "지금 재생",
+                sectionNewRelease: "✨ 신규 발매",
+                sectionGlobal12: "🌍 글로벌 스트리밍 TOP #12",
+                sectionYouMayLike: "💖 추천 음악",
+                sectionAllSongs: "🎶 추천 음원 (랜덤)",
+                playerReady: "준비됨",
+                playerPlaying: "재생 중...",
+                playerPaused: "일시 정지",
+                settingsTitle: "사이트 설정",
+                lblLang: "언어 (Language)",
+                lblBgTheme: "배경 테마 (12가지 스타일)",
+                btnCancel: "취소",
+                btnSave: "설정 저장",
+                notFound: "일치하는 노래를 찾을 수 없습니다",
+                btnPlayList: "재생",
+                playCountText: "재생 횟수"
+            }
+        };
+
+        const audio = document.getElementById('audio-player');
+        const playIcon = document.getElementById('play-icon');
+        const modalPlayIcon = document.getElementById('modal-play-icon');
+        const playerTitle = document.getElementById('player-title');
+        const modalSongTitle = document.getElementById('modal-song-title');
+        const modalSongArtist = document.getElementById('modal-song-artist');
+        const playerStatus = document.getElementById('player-status');
+        const playerThumb = document.getElementById('player-thumb');
+        const modalCover = document.getElementById('modal-cover');
+        const modalBlurBg = document.getElementById('modal-blur-bg');
+        const progressFilled = document.getElementById('progress-filled');
+        const modalProgressFilled = document.getElementById('modal-progress-filled');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationTimeEl = document.getElementById('duration-time');
+        const modalCurrentTimeEl = document.getElementById('modal-current-time');
+        const modalDurationTimeEl = document.getElementById('modal-duration-time');
+
+        const playSvg = '<path d="M8 5v14l11-7z"/>';
+        const pauseSvg = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+
+        // 監聽 Firebase 雲端播放次數，實現全網即時同步更新
+        function listenToPlayCounts() {
+            const playCountsRef = ref(db, 'playCounts');
+            onValue(playCountsRef, (snapshot) => {
+                if (snapshot.exists()) {
+                    playCounts = snapshot.val() || {};
+                } else {
+                    playCounts = {};
+                }
+                if (playlist.length > 0) {
+                    refreshUI();
+                }
+            }, (error) => {
+                console.error('監聽 Firebase 播放次數失敗:', error);
+            });
+        }
+
+        // 更新 Firebase 中的單曲播放次數 (將網址轉換為安全的 Firebase Key)
+        async function incrementGlobalPlayCount(songUrl) {
+            const safeKey = encodeURIComponent(songUrl).replace(/\./g, '%2E');
+            
+            try {
+                const currentCount = playCounts[songUrl] || 0;
+                const newCount = currentCount + 1;
+                playCounts[songUrl] = newCount;
+
+                // 寫入 Firebase 資料庫
+                const updates = {};
+                updates['/playCounts/' + safeKey] = newCount;
+                await update(ref(db), updates);
+            } catch (error) {
+                console.error('更新 Firebase 播放次數失敗:', error);
+            }
+        }
+
+        async function loadMusicData() {
+            try {
+                const response = await fetch(JSON_URL);
+                playlist = await response.json();
+                
+                listenToPlayCounts(); // 啟動即時雲端監聽
+                
+                if (playlist.length > 0 && !audio.src) {
+                    const song = playlist[0];
+                    playerTitle.innerText = song.title;
+                    modalSongTitle.innerText = song.title;
+                    modalSongArtist.innerText = song.artist;
+                    playerThumb.src = song.cover;
+                    modalCover.src = song.cover;
+                    modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
+                }
+            } catch (error) {
+                console.error('無法載入音樂資料:', error);
+            }
+        }
+
+        function refreshUI() {
+            setupHeroSection();
+            renderNewReleases();
+            renderGlobal12();
+            renderYouMayLike();
+            renderRandomList();
+        }
+
+        function loadUserSettings() {
+            const saved = JSON.parse(localStorage.getItem('fr_music_settings')) || { language: 'zh-TW', bgTheme: '#050505' };
+            document.documentElement.style.setProperty('--bg-color', saved.bgTheme);
+            applyLanguage(saved.language);
+            document.getElementById('setting-language').value = saved.language;
+            document.getElementById('setting-bg-theme').value = saved.bgTheme;
+        }
+
+        function applyLanguage(lang) {
+            const t = translations[lang] || translations['zh-TW'];
+            document.getElementById('page-title').innerText = t.pageTitle;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('dd-title').innerText = t.hotTitle;
+            document.getElementById('hero-tag-text').innerText = t.heroTag;
+            document.getElementById('btn-play-now').innerText = t.btnPlay;
+            document.getElementById('section-new-release').innerText = t.sectionNewRelease;
+            document.getElementById('section-global12').innerText = t.sectionGlobal12;
+            document.getElementById('section-you-may-like').innerText = t.sectionYouMayLike;
+            document.getElementById('section-all-songs').innerText = t.sectionAllSongs;
+            if(!isPlaying) { playerStatus.innerText = t.playerReady; }
+            document.getElementById('settings-title').innerText = t.settingsTitle;
+            document.getElementById('lbl-language').innerText = t.lblLang;
+            document.getElementById('lbl-bgtheme').innerText = t.lblBgTheme;
+            document.getElementById('btn-cancel').innerText = t.btnCancel;
+            document.getElementById('btn-save').innerText = t.btnSave;
+            if(playlist.length > 0) { refreshUI(); }
+        }
+
+        loadUserSettings();
+        loadMusicData();
+
+        function saveSettings() {
+            const language = document.getElementById('setting-language').value;
+            const bgTheme = document.getElementById('setting-bg-theme').value;
+            localStorage.setItem('fr_music_settings', JSON.stringify({ language, bgTheme }));
+            loadUserSettings();
+            closeSettings();
+        }
+
+        window.openSettings = function() { document.getElementById('settings-modal').classList.add('open'); }
+        window.closeSettings = function() { document.getElementById('settings-modal').classList.remove('open'); }
+
+        // 搜尋功能
+        window.onSearchInput = function(keyword) {
+            const dropdown = document.getElementById('search-dropdown');
+            const resultsList = document.getElementById('search-results-list');
+            resultsList.innerHTML = '';
+
+            if (!keyword.trim()) {
+                dropdown.classList.remove('show');
+                return;
+            }
+
+            const matchedSongs = playlist.filter(s => 
+                s.title.toLowerCase().includes(keyword.toLowerCase()) || 
+                s.artist.toLowerCase().includes(keyword.toLowerCase()) ||
+                s.desc.toLowerCase().includes(keyword.toLowerCase())
+            );
+
+            if (matchedSongs.length === 0) {
+                const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+                const t = translations[savedLang] || translations['zh-TW'];
+                resultsList.innerHTML = `<div style="padding: 10px 16px; font-size: 13px; color: var(--text-secondary);">${t.notFound}</div>`;
+            } else {
+                matchedSongs.forEach(song => {
+                    const originalIndex = playlist.findIndex(s => s.url === song.url);
+                    resultsList.innerHTML += `
+                        <div class="search-result-item" onclick="selectSearchResult(${originalIndex})">
+                            <img src="${song.cover}" class="search-result-thumb" alt="封面">
+                            <div class="search-result-info">
+                                <div class="search-result-title">${song.title}</div>
+                                <div class="search-result-artist">${song.artist}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            dropdown.classList.add('show');
+        }
+
+        window.selectSearchResult = function(index) {
+            document.getElementById('search-dropdown').classList.remove('show');
+            document.getElementById('search-input').value = '';
+            window.openModal();
+            window.playSong(index);
+        }
+
+        window.onLogoClick = function() {
+            const logoImg = document.getElementById('logo-img');
+            logoImg.classList.add('rotate-animate');
+            setTimeout(() => { logoImg.classList.remove('rotate-animate'); }, 800);
+            document.getElementById('search-input').value = '';
+            document.getElementById('search-dropdown').classList.remove('show');
+            renderRandomList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 最上方：全球 NO.1 播放量最高的歌
+        function setupHeroSection() {
+            if (playlist.length === 0) return;
+            let mostPlayedIndex = 0;
+            let maxCount = -1;
+            playlist.forEach((song, idx) => {
+                const cnt = playCounts[song.url] || 0;
+                if (cnt > maxCount) {
+                    maxCount = cnt;
+                    mostPlayedIndex = idx;
+                }
+            });
+
+            heroSongIndex = mostPlayedIndex;
+            const song = playlist[heroSongIndex];
+            const count = playCounts[song.url] || 0;
+
+            document.getElementById('hero-cover').src = song.cover;
+            document.getElementById('hero-title').innerText = song.title;
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+            document.getElementById('hero-desc').innerHTML = `${t.heroDesc} <strong style="color:var(--accent);">${count}</strong> 次 | ${song.artist}`;
+        }
+
+        // 全新上架 (最多 15 首)
+        function renderNewReleases() {
+            const container = document.getElementById('new-release-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const newSongs = [...playlist].slice(0, 15);
+
+            newSongs.forEach((song) => {
+                const originalIndex = playlist.findIndex(s => s.url === song.url);
+                container.innerHTML += `
+                    <div class="new-release-item" onclick="openModal(); playSong(${originalIndex});">
+                        <img src="${song.cover}" class="new-release-thumb" alt="封面">
+                        <div class="new-release-info">
+                            <div class="new-release-title">${song.title}</div>
+                            <div class="new-release-artist">${song.artist}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 全球播放排行前 #12
+        function renderGlobal12() {
+            const container = document.getElementById('global12-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+
+            const sortedSongs = [...playlist].sort((a, b) => {
+                const countA = playCounts[a.url] || 0;
+                const countB = playCounts[b.url] || 0;
+                return countB - countA;
+            }).slice(0, 12);
+
+            sortedSongs.forEach((song, idx) => {
+                const originalIndex = playlist.findIndex(s => s.url === song.url);
+                const count = playCounts[song.url] || 0;
+                container.innerHTML += `
+                    <div class="global12-item" onclick="openModal(); playSong(${originalIndex});">
+                        <div class="global12-rank">#${idx + 1}</div>
+                        <img src="${song.cover}" class="global12-thumb" alt="封面">
+                        <div class="global12-info">
+                            <div class="global12-title">${song.title}</div>
+                            <div class="global12-count">${t.playCountText}: ${count} 次</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 你可能會喜歡
+        function renderYouMayLike() {
+            const gridContainer = document.getElementById('grid-section-container');
+            if (!gridContainer) return;
+            gridContainer.innerHTML = '';
+            
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+
+            const recommendedSongs = [...playlist].sort(() => 0.5 - Math.random()).slice(0, 4);
+
+            recommendedSongs.forEach((song) => {
+                const originalIndex = playlist.findIndex(s => s.url === song.url);
+                const count = playCounts[song.url] || 0;
+                gridContainer.innerHTML += `
+                    <div class="album-card" onclick="openModal(); playSong(${originalIndex});">
+                        <img src="${song.cover}" alt="${song.title}">
+                        <div class="title">${song.title}</div>
+                        <div class="desc">${song.artist}</div>
+                        <div class="play-count-tag">${t.playCountText}: ${count} 次</div>
+                    </div>
+                `;
+            });
+        }
+
+        // 為您推薦 (隨機) 清單
+        function renderRandomList() {
+            const listContainer = document.getElementById('song-list-container');
+            if (!listContainer) return;
+            listContainer.innerHTML = '';
+            
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+
+            const randomizedSongs = [...playlist].sort(() => 0.5 - Math.random());
+
+            randomizedSongs.forEach((song) => {
+                const originalIndex = playlist.findIndex(s => s.url === song.url);
+                const count = playCounts[song.url] || 0;
+                listContainer.innerHTML += `
+                    <div class="song-item">
+                        <div class="song-info" onclick="openModal(); playSong(${originalIndex});">
+                            <img src="${song.cover}" class="song-thumb" alt="封面">
+                            <div style="min-width:0; flex:1;">
+                                <div class="song-title">${song.title}</div>
+                                <div class="song-artist">${song.artist}</div>
+                            </div>
+                        </div>
+                        <div class="song-right-group">
+                            <div class="song-play-count">${t.playCountText}: ${count} 次</div>
+                            <button class="action-btn" onclick="playSong(${originalIndex})">${t.btnPlayList}</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        window.playSong = function(index) {
+            currentIndex = index;
+            const song = playlist[currentIndex];
+            if (!song) return;
+            
+            hasCountedCurrentSong = false;
+
+            audio.src = song.url;
+            audio.play();
+            isPlaying = true;
+            
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+
+            playerTitle.innerText = song.title;
+            modalSongTitle.innerText = song.title;
+            modalSongArtist.innerText = song.artist;
+            playerThumb.src = song.cover;
+            modalCover.src = song.cover;
+            modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
+            playerStatus.innerText = t.playerPlaying;
+            
+            playIcon.innerHTML = pauseSvg;
+            modalPlayIcon.innerHTML = pauseSvg;
+        }
+
+        window.togglePlayPause = function() {
+            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+            const t = translations[savedLang] || translations['zh-TW'];
+
+            if (!audio.src && playlist.length > 0) {
+                window.playSong(0);
+                return;
+            }
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                playIcon.innerHTML = playSvg;
+                modalPlayIcon.innerHTML = playSvg;
+                playerStatus.innerText = t.playerPaused;
+            } else {
+                audio.play();
+                isPlaying = true;
+                playIcon.innerHTML = pauseSvg;
+                modalPlayIcon.innerHTML = pauseSvg;
+                playerStatus.innerText = t.playerPlaying;
+            }
+        }
+
+        window.nextSong = function() {
+            if (isShuffle) {
+                currentIndex = Math.floor(Math.random() * playlist.length);
+            } else {
+                currentIndex = (currentIndex + 1) % playlist.length;
+            }
+            window.playSong(currentIndex);
+        }
+
+        window.prevSong = function() {
+            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
+            window.playSong(currentIndex);
+        }
+
+        window.skipTime = function(seconds) {
+            if (!audio.duration) return;
+            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+        }
+
+        window.toggleShuffle = function() {
+            isShuffle = !isShuffle;
+            document.querySelectorAll('.shuffle-trigger').forEach(b => b.classList.toggle('active', isShuffle));
+        }
+
+        window.toggleRepeat = function() {
+            isRepeat = !isRepeat;
+            document.querySelectorAll('.repeat-trigger').forEach(b => b.classList.toggle('active', isRepeat));
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration && !isDragging) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                updateProgressUI(percent);
+                
+                // 當播放超過 50% 時，記錄一次全球播放次數並寫入 Firebase
+                if (percent >= 50 && !hasCountedCurrentSong) {
+                    hasCountedCurrentSong = true;
+                    const song = playlist[currentIndex];
+                    if (song) {
+                        incrementGlobalPlayCount(song.url);
+                    }
+                }
+
+                const formattedCurrent = formatTime(audio.currentTime);
+                const formattedDuration = formatTime(audio.duration);
+                
+                currentTimeEl.innerText = formattedCurrent;
+                durationTimeEl.innerText = formattedDuration;
+                modalCurrentTimeEl.innerText = formattedCurrent;
+                modalDurationTimeEl.innerText = formattedDuration;
+
+                if (isPlaying) {
+                    document.querySelectorAll('.v-bar').forEach(bar => {
+                        const randomHeight = Math.floor(Math.random() * 24) + 6;
+                        bar.style.height = randomHeight + 'px';
+                    });
+                }
+            }
+        });
+
+        function updateProgressUI(percent) {
+            progressFilled.style.width = percent + '%';
+            modalProgressFilled.style.width = percent + '%';
+        }
+
+        let isDragging = false;
+        function setupSeekBar(barId) {
+            const bar = document.getElementById(barId);
+            if(!bar) return;
+
+            const getPercent = (e) => {
+                const rect = bar.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                let percent = (clientX - rect.left) / rect.width;
+                return Math.max(0, Math.min(1, percent));
+            };
+
+            const onStart = (e) => {
+                if (!audio.duration) return;
+                isDragging = true;
+                const percent = getPercent(e);
+                updateProgressUI(percent * 100);
+            };
+
+            const onMove = (e) => {
+                if (!isDragging || !audio.duration) return;
+                const percent = getPercent(e);
+                updateProgressUI(percent * 100);
+                const previewTime = percent * audio.duration;
+                currentTimeEl.innerText = formatTime(previewTime);
+                modalCurrentTimeEl.innerText = formatTime(previewTime);
+            };
+
+            const onEnd = (e) => {
+                if (!isDragging || !audio.duration) return;
+                isDragging = false;
+                const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+                const rect = bar.getBoundingClientRect();
+                let percent = (clientX - rect.left) / rect.width;
+                percent = Math.max(0, Math.min(1, percent));
+                audio.currentTime = percent * audio.duration;
+            };
+
+            bar.addEventListener('mousedown', onStart);
+            bar.addEventListener('mousemove', onMove);
+            bar.addEventListener('mouseup', onEnd);
+            bar.addEventListener('touchstart', onStart, {passive: true});
+            bar.addEventListener('touchmove', onMove, {passive: true});
+            bar.addEventListener('touchend', onEnd);
+        }
+
+        setupSeekBar('progress-bar');
+        setupSeekBar('modal-progress-bar');
+
+        window.setVolume = function(val) { audio.volume = val; }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return mins + ":" + (secs < 10 ? "0" : "") + secs;
+        }
+
+        audio.addEventListener('ended', () => {
+            if (isRepeat) { audio.play(); } else { window.nextSong(); }
+        });
+
+        window.openModal = function() { document.getElementById('now-playing-modal').classList.add('open'); }
+        window.closeModal = function() { document.getElementById('now-playing-modal').classList.remove('open'); }
+    </script>
+</body>
+</html>
