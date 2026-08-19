@@ -203,19 +203,16 @@
         .search-result-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 12px;
             padding: 8px 16px;
             cursor: pointer;
             transition: background 0.2s;
         }
         .search-result-item:hover { background: rgba(255,255,255,0.08); }
-        .search-result-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
         .search-result-thumb { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
         .search-result-info { min-width: 0; flex: 1; }
         .search-result-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .search-result-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .search-result-duration { font-size: 11px; color: var(--text-secondary); flex-shrink: 0; }
 
         /* 主要內容區 */
         main {
@@ -354,8 +351,8 @@
         .new-release-thumb, .global12-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
         .new-release-info, .global12-info { flex: 1; min-width: 0; }
         .new-release-title, .global12-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-        .new-release-artist, .global12-count { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .item-duration { font-size: 11px; color: var(--text-secondary); margin-left: 8px; flex-shrink: 0; }
+        .new-release-artist, .global12-count { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; justify-content: space-between; align-items: center; }
+        .song-duration-tag { font-size: 10px; color: var(--accent); font-weight: 600; }
 
         .global12-rank {
             font-size: 16px;
@@ -403,10 +400,8 @@
         }
 
         .album-card .title { font-size: 14px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .album-card .desc { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .album-card .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
-        .album-card .play-count-tag { font-size: 11px; color: var(--accent); font-weight: 500; }
-        .album-card .card-duration { font-size: 11px; color: var(--text-secondary); }
+        .album-card .desc { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; justify-content: space-between; }
+        .album-card .play-count-tag { font-size: 11px; color: var(--accent); margin-top: 6px; font-weight: 500; }
 
         .song-list { display: flex; flex-direction: column; gap: 8px; }
         .song-item {
@@ -426,7 +421,7 @@
         .song-info { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
         .song-thumb { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
         .song-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .song-artist { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-artist { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; gap: 10px; align-items: center; }
         
         .song-right-group {
             display: flex;
@@ -435,7 +430,6 @@
             flex-shrink: 0;
         }
         .song-play-count { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
-        .song-duration-tag { font-size: 12px; color: var(--text-secondary); font-weight: 500; margin-left: 8px; }
 
         .like-btn {
             background: transparent;
@@ -485,13 +479,31 @@
             box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
         }
 
-        .player-left { display: flex; align-items: center; gap: 12px; width: 260px; cursor: pointer; min-width: 0; }
+        .player-left { display: flex; align-items: center; gap: 12px; width: 280px; cursor: pointer; min-width: 0; }
         .player-left img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
         .player-meta { min-width: 0; flex: 1; }
         .player-meta .title { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-meta .status { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .player-center { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 550px; padding: 0 10px; }
+        /* 一般模式下的半透明等化條（嵌入在左側專輯右邊、右側控制按鈕之間，不影響原排版） */
+        .mini-visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 28px;
+            padding: 0 8px;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+        .mini-v-bar {
+            width: 2.5px;
+            background: var(--accent);
+            border-radius: 2px;
+            height: 4px;
+            transition: height 0.08s ease;
+        }
+
+        .player-center { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; max-width: 500px; padding: 0 10px; }
         .player-controls { display: flex; align-items: center; gap: 18px; }
         .ctrl-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .ctrl-btn:hover { color: var(--text-primary); transform: scale(1.15); }
@@ -528,17 +540,17 @@
         .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 3px; width: 0%; pointer-events: none; transition: width 0.05s linear; }
         .progress-bar:hover .progress-filled { background: var(--accent); }
 
-        .player-right { width: 240px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
-        .volume-slider { width: 80px; accent-color: var(--text-primary); cursor: pointer; }
+        .player-right { width: 300px; display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
+        .volume-slider { width: 70px; accent-color: var(--text-primary); cursor: pointer; }
 
-        /* 特效按鈕 */
+        /* 特效按鈕（重低音、環繞音響） */
         .extra-ctrl-btn {
             background: var(--liquid-glass-bg);
             border: var(--liquid-glass-border);
             color: var(--text-secondary);
             font-size: 10px;
             font-weight: 700;
-            padding: 4px 8px;
+            padding: 4px 7px;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
@@ -546,22 +558,22 @@
         .extra-ctrl-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.3); }
         .extra-ctrl-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 12px rgba(250, 36, 60, 0.6); }
 
-        /* 底部播放列專屬半透明等化條 */
-        .bottom-visualizer {
+        /* 左右聲道控制小工具群組 */
+        .pan-control-group {
             display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 24px;
-            opacity: 0.45;
-            pointer-events: none;
-            padding: 0 10px;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.3);
+            padding: 3px 6px;
+            border-radius: 6px;
+            border: var(--liquid-glass-border);
         }
-        .bottom-v-bar {
-            width: 2.5px;
-            background: var(--accent);
-            border-radius: 2px;
-            height: 4px;
-            transition: height 0.08s ease;
+        .pan-slider {
+            width: 50px;
+            accent-color: var(--accent);
+            cursor: pointer;
         }
 
         /* 全螢幕播放 Modal */
@@ -650,14 +662,17 @@
 
         .carplay-left {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 300px;
+            height: 300px;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .carplay-cover {
-            width: 100%;
-            height: 100%;
+            width: 300px;
+            height: 300px;
             border-radius: 22px;
             object-fit: cover;
             box-shadow: 0 25px 60px rgba(0,0,0,0.75);
@@ -665,30 +680,32 @@
         }
         .carplay-cover:hover { transform: scale(1.02); }
 
-        /* 全螢幕模式：播放卡片下方的一整排等化條 */
-        .visualizer-bars-full {
+        /* 需求修改：全螢幕時，等化條改放在整個播放卡片下方一整排 */
+        .visualizer-bars-fullscreen {
+            position: absolute;
+            bottom: -32px;
+            left: 0;
+            width: 100%;
             display: flex;
             align-items: flex-end;
-            justify-content: center;
-            gap: 4px;
-            height: 48px;
-            width: 100%;
-            margin-top: 20px;
-            background: rgba(12, 12, 18, 0.75);
-            padding: 8px 16px;
+            justify-content: space-between;
+            gap: 2px;
+            height: 40px;
+            pointer-events: none;
+            background: rgba(12, 12, 18, 0.85);
+            padding: 6px 16px;
             border-radius: 16px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: var(--liquid-glass-border);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.5);
         }
-        .v-bar-full {
-            width: 4px;
+        .v-bar {
+            flex: 1;
             background: linear-gradient(to top, var(--accent), #ff9176, #ffffff);
-            border-radius: 4px;
-            height: 8px;
+            border-radius: 2px;
+            height: 6px;
             transition: height 0.08s ease;
-            box-shadow: 0 0 10px rgba(250, 36, 60, 0.7);
         }
 
         .carplay-right {
@@ -700,7 +717,7 @@
         }
 
         .carplay-song-title {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
             margin-bottom: 6px;
             letter-spacing: -0.5px;
@@ -772,29 +789,27 @@
             .song-play-count { display: none; }
             .action-btn { padding: 5px 12px; font-size: 11px; }
 
-            .bottom-player { height: 76px; padding: 0 12px; }
-            .player-left { width: 140px; gap: 10px; }
-            .player-left img { width: 44px; height: 44px; border-radius: 8px; }
-            .player-meta .title { font-size: 12px; }
-            .player-meta .status { font-size: 10px; }
+            .bottom-player { height: 76px; padding: 0 10px; }
+            .player-left { width: 130px; gap: 8px; }
+            .player-left img { width: 40px; height: 40px; border-radius: 8px; }
+            .player-meta .title { font-size: 11px; }
+            .player-meta .status { font-size: 9px; }
+            .mini-visualizer { display: none; } /* 行動版隱藏迷你等化條以防擁擠 */
             .player-center { max-width: none; flex: 1; padding: 0 4px; gap: 4px; }
-            .player-controls { gap: 12px; }
-            .play-pause-btn { width: 34px; height: 34px; }
+            .player-controls { gap: 10px; }
+            .play-pause-btn { width: 32px; height: 32px; }
             .player-right { display: none; }
-            .bottom-visualizer { display: none; }
 
             .carplay-container {
                 flex-direction: column;
                 width: 95%;
                 padding: 24px 16px;
                 gap: 16px;
-                max-height: 88dvh;
-                overflow-y: auto;
+                max-height: 90dvh;
                 border-radius: 24px;
             }
-            .carplay-left { width: 160px; height: 160px; margin: 0 auto; }
-            .visualizer-bars-full { height: 38px; margin-top: 12px; }
-            .v-bar-full { width: 3px; }
+            .carplay-left, .carplay-cover { width: 170px; height: 170px; }
+            .visualizer-bars-fullscreen { bottom: -24px; height: 32px; padding: 4px 10px; }
             .carplay-song-title { font-size: 18px; text-align: center; }
             .carplay-song-artist { font-size: 13px; text-align: center; margin-bottom: 12px; }
             .carplay-right { width: 100%; align-items: center; }
@@ -817,7 +832,6 @@
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" id="search-input" class="search-bar" placeholder="搜尋歌曲、曲風..." oninput="onSearchInput(this.value)">
             
-            <!-- 搜尋結果下拉清單 -->
             <div class="search-dropdown" id="search-dropdown">
                 <div class="dropdown-title" id="dd-title">搜尋結果</div>
                 <div id="search-results-list"></div>
@@ -845,7 +859,6 @@
 
     <!-- 主要內容區 -->
     <main>
-        <!-- 1. 最上面：本地 NO.1 播放量最高的歌 -->
         <div class="hero-banner" id="hero-banner-box">
             <img class="hero-cover" id="hero-cover" src="" alt="封面">
             <div class="hero-content">
@@ -859,25 +872,21 @@
             </div>
         </div>
 
-        <!-- 2. 全新上架 -->
         <section style="margin-bottom: 35px;">
             <h3 id="section-new-release">✨ 最新上架</h3>
             <div class="new-release-grid" id="new-release-container"></div>
         </section>
 
-        <!-- 3. 本地播放排行前 #12 -->
         <section style="margin-bottom: 35px;">
             <h3 id="section-global12">🏠 本地播放排行前 #12</h3>
             <div class="global12-grid" id="global12-container"></div>
         </section>
 
-        <!-- 4. 你可能會喜歡 -->
         <section style="margin-bottom: 35px;">
             <h3 id="section-you-may-like">💖 你可能會喜歡</h3>
             <div class="grid-section" id="grid-section-container"></div>
         </section>
 
-        <!-- 5. 為您推薦 -->
         <section>
             <h3 id="section-all-songs">🎶 為您推薦</h3>
             <div class="song-list" id="song-list-container"></div>
@@ -892,6 +901,12 @@
                 <div class="title" id="player-title">尚未選擇歌曲</div>
                 <div class="status" id="player-status">準備就緒</div>
             </div>
+        </div>
+
+        <!-- 需求修改：一般模式半透明等化條，顯示在左側專輯右邊、右側控制按鈕之間，不影響原排版 -->
+        <div class="mini-visualizer" id="mini-visualizer">
+            <div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div>
+            <div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div>
         </div>
 
         <div class="player-center">
@@ -918,14 +933,6 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
                 </button>
             </div>
-            
-            <!-- 非全螢幕時半透明顯示在底部播放列中間的等化條 -->
-            <div class="bottom-visualizer" id="bottom-visualizer">
-                <div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div>
-                <div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div>
-                <div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div><div class="bottom-v-bar"></div>
-            </div>
-
             <div class="progress-container">
                 <span id="current-time">0:00</span>
                 <div class="progress-bar" id="progress-bar">
@@ -939,6 +946,12 @@
 
         <div class="player-right">
             <button id="bass-boost-btn" class="extra-ctrl-btn" onclick="toggleBassBoost()" title="重低音加強">BASS</button>
+            <button id="surround-btn" class="extra-ctrl-btn" onclick="toggleSmartSurround()" title="網站自動辨識專業音樂環繞音響">AI 環繞</button>
+            <div class="pan-control-group" title="手動左右聲道調節">
+                <span>L</span>
+                <input type="range" class="pan-slider" id="pan-slider" min="-1" max="1" step="0.05" value="0" oninput="setPan(this.value)">
+                <span>R</span>
+            </div>
             <button id="mute-btn" class="ctrl-btn" onclick="toggleMute()" title="靜音切換">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
             </button>
@@ -949,68 +962,58 @@
     <!-- 全螢幕播放 Modal -->
     <div class="modal-overlay" id="now-playing-modal">
         <div class="modal-blur-bg" id="modal-blur-bg"></div>
-        <div class="carplay-container" style="flex-direction: column; max-width: 650px;">
+        <div class="carplay-container">
             <button class="close-modal-btn" onclick="closeModal()">×</button>
             
-            <div style="display: flex; align-items: center; gap: 30px; width: 100%;">
-                <div class="carplay-left" style="width: 200px; height: 200px;">
-                    <img class="carplay-cover" id="modal-cover" src="" alt="封面">
-                </div>
-
-                <div class="carplay-right">
-                    <div class="carplay-song-title" id="modal-song-title">歌曲名稱</div>
-                    <div class="carplay-song-artist" id="modal-song-artist">作者</div>
-
-                    <!-- 左右聲道控制區 -->
-                    <div style="background: rgba(255,255,255,0.06); padding: 12px 16px; border-radius: 14px; border: var(--liquid-glass-border); margin-bottom: 12px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 12px;">
-                            <span style="color: var(--text-secondary);">🎧 左右聲道 / 環繞音響</span>
-                            <button id="auto-pan-btn" class="extra-ctrl-btn active" onclick="toggleAutoPan()">自動環繞</button>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--text-secondary);">
-                            <span>L</span>
-                            <input type="range" id="pan-slider" min="-1" max="1" step="0.05" value="0" style="flex:1; accent-color: var(--accent); cursor:pointer;" oninput="setManualPan(this.value)">
-                            <span>R</span>
-                        </div>
-                    </div>
+            <div class="carplay-left">
+                <img class="carplay-cover" id="modal-cover" src="" alt="封面">
+                <!-- 需求修改：全螢幕時等化條改放在整個播放卡片下方一整排 -->
+                <div class="visualizer-bars-fullscreen" id="visualizer-bars">
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                 </div>
             </div>
 
-            <!-- 全螢幕模式：播放卡片下方的一整排等化條 -->
-            <div class="visualizer-bars-full" id="visualizer-bars-full">
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-                <div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div><div class="v-bar-full"></div>
-            </div>
+            <div class="carplay-right">
+                <div class="carplay-song-title" id="modal-song-title">歌曲名稱</div>
+                <div class="carplay-song-artist" id="modal-song-artist">作者</div>
 
-            <div class="carplay-controls-area">
-                <div class="progress-container" style="width: 100%;">
-                    <span id="modal-current-time">0:00</span>
-                    <div class="progress-bar" id="modal-progress-bar">
-                        <div class="progress-track">
-                            <div class="progress-filled" id="modal-progress-filled"></div>
-                        </div>
+                <div class="carplay-controls-area">
+                    <!-- 全螢幕聲道與環繞控制輔助列 -->
+                    <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-start; font-size: 11px; color: var(--text-secondary);">
+                        <span>聲道平衡 (Pan):</span>
+                        <input type="range" style="width: 100px; accent-color: var(--accent);" min="-1" max="1" step="0.05" value="0" oninput="setPan(this.value); document.getElementById('pan-slider').value=this.value;">
+                        <button class="extra-ctrl-btn" id="modal-surround-btn" onclick="toggleSmartSurround()">✨ AI 環繞音響</button>
                     </div>
-                    <span id="modal-duration-time">0:00</span>
-                </div>
 
-                <div class="carplay-controls">
-                    <button class="ctrl-btn shuffle-trigger" onclick="toggleShuffle()" title="隨機播放">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
-                    </button>
-                    <button class="ctrl-btn" onclick="prevSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
-                    <button class="ctrl-btn" onclick="skipTime(-10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.99 5V1L6 7l5.99 6v-4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
-                    <button class="play-pause-btn" style="width:42px; height:42px;" onclick="togglePlayPause()">
-                        <svg id="modal-play-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                    </button>
-                    <button class="ctrl-btn" onclick="skipTime(10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5V1l5.99 6L12 13v-4c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
-                    <button class="ctrl-btn" onclick="nextSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM5 18l8.5-6L5 6v12z"/></svg></button>
-                    <button class="ctrl-btn repeat-trigger" onclick="toggleRepeat()" title="單曲循環">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-                    </button>
+                    <div class="progress-container" style="width: 100%;">
+                        <span id="modal-current-time">0:00</span>
+                        <div class="progress-bar" id="modal-progress-bar">
+                            <div class="progress-track">
+                                <div class="progress-filled" id="modal-progress-filled"></div>
+                            </div>
+                        </div>
+                        <span id="modal-duration-time">0:00</span>
+                    </div>
+
+                    <div class="carplay-controls">
+                        <button class="ctrl-btn shuffle-trigger" onclick="toggleShuffle()" title="隨機播放">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                        </button>
+                        <button class="ctrl-btn" onclick="prevSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+                        <button class="ctrl-btn" onclick="skipTime(-10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11.99 5V1L6 7l5.99 6v-4c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
+                        <button class="play-pause-btn" style="width:42px; height:42px;" onclick="togglePlayPause()">
+                            <svg id="modal-play-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <button class="ctrl-btn" onclick="skipTime(10)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5V1l5.99 6L12 13v-4c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/><text x="8.5" y="15.5" font-size="7" fill="currentColor" stroke="none">10</text></svg></button>
+                        <button class="ctrl-btn" onclick="nextSong()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM5 18l8.5-6L5 6v12z"/></svg></button>
+                        <button class="ctrl-btn repeat-trigger" onclick="toggleRepeat()" title="單曲循環">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1104,7 +1107,6 @@
 
     <audio id="audio-player" crossorigin="anonymous"></audio>
 
-    <!-- 音樂平台核心邏輯 -->
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
@@ -1127,21 +1129,21 @@
         let previousVolume = 1;
         let isMuted = false;
         let isBassBoosted = false;
-        let isAutoPan = true; // 預設開啟智慧自動環繞
+        let isSmartSurroundActive = false;
 
         // Web Audio API 相關變數
         let audioCtx = null;
         let sourceNode = null;
         let analyserNode = null;
         let bassFilter = null;
-        let pannerNode = null;
+        let stereoPannerNode = null;
         let animationFrameId = null;
 
         const JSON_URL = "https://raw.githubusercontent.com/FR667/FR_MUSIC/refs/heads/main/data.json";
 
         const FALLBACK_PLAYLIST = [
-            { title: "範例音樂 1 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", duration: "6:12" },
-            { title: "範例音樂 2 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", duration: "7:03" }
+            { title: "範例音樂 1 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "範例音樂 2 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
         ];
 
         const translations = {
@@ -1331,9 +1333,29 @@
                 playerThumb.src = song.cover;
                 modalCover.src = song.cover;
                 modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
-                durationTimeEl.innerText = song.duration || "3:30";
-                modalDurationTimeEl.innerText = song.duration || "3:30";
+                
+                // 預先載入第一首曲子的真實長度顯示
+                preloadSongDurations();
             }
+        }
+
+        // 動態讀取真實音樂長度並更新 UI
+        function preloadSongDurations() {
+            playlist.forEach((song, idx) => {
+                if (!song.realDuration) {
+                    const tempAudio = new Audio(song.url);
+                    tempAudio.addEventListener('loadedmetadata', () => {
+                        song.realDuration = formatTime(tempAudio.duration);
+                        updateSongDurationUI(song.url, song.realDuration);
+                    });
+                }
+            });
+        }
+
+        function updateSongDurationUI(url, durationStr) {
+            document.querySelectorAll(`.song-duration-tag[data-url="${CSS.escape(url)}"]`).forEach(el => {
+                el.innerText = durationStr;
+            });
         }
 
         function refreshUI() {
@@ -1342,6 +1364,7 @@
             renderGlobal12();
             renderYouMayLike();
             renderRandomList();
+            setTimeout(preloadSongDurations, 500);
         }
 
         function loadUserSettings() {
@@ -1429,9 +1452,8 @@
                         <div class="song-item" onclick="openModal(); playSong(${originalIndex}); closeFavoritesModal();">
                             <div class="song-info">
                                 <img src="${song.cover}" class="song-thumb" alt="封面">
-                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist}</div></div>
+                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist} <span class="song-duration-tag">${song.realDuration || ''}</span></div></div>
                             </div>
-                            <div class="song-duration-tag">${song.duration || '3:30'}</div>
                         </div>`;
                 }
             });
@@ -1452,9 +1474,8 @@
                         <div class="song-item" onclick="openModal(); playSong(${originalIndex}); closeHistoryModal();">
                             <div class="song-info">
                                 <img src="${song.cover}" class="song-thumb" alt="封面">
-                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist}</div></div>
+                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist} <span class="song-duration-tag">${song.realDuration || ''}</span></div></div>
                             </div>
-                            <div class="song-duration-tag">${song.duration || '3:30'}</div>
                         </div>`;
                 }
             });
@@ -1475,10 +1496,9 @@
                             <img src="${song.cover}" class="song-thumb" alt="封面">
                             <div>
                                 <div class="song-title">${song.title} ${isCurrent ? '<span style="color:var(--accent); font-size:11px;">(播放中)</span>' : ''}</div>
-                                <div class="song-artist">${song.artist}</div>
+                                <div class="song-artist">${song.artist} <span class="song-duration-tag">${song.realDuration || ''}</span></div>
                             </div>
                         </div>
-                        <div class="song-duration-tag">${song.duration || '3:30'}</div>
                     </div>`;
             });
         }
@@ -1507,14 +1527,11 @@
                     const originalIndex = playlist.findIndex(s => s.url === song.url);
                     resultsList.innerHTML += `
                         <div class="search-result-item" onclick="selectSearchResult(${originalIndex})">
-                            <div class="search-result-left">
-                                <img src="${song.cover}" class="search-result-thumb" alt="封面">
-                                <div class="search-result-info">
-                                    <div class="search-result-title">${song.title}</div>
-                                    <div class="search-result-artist">${song.artist}</div>
-                                </div>
+                            <img src="${song.cover}" class="search-result-thumb" alt="封面">
+                            <div class="search-result-info">
+                                <div class="search-result-title">${song.title}</div>
+                                <div class="search-result-artist">${song.artist}</div>
                             </div>
-                            <div class="search-result-duration">${song.duration || '3:30'}</div>
                         </div>
                     `;
                 });
@@ -1553,10 +1570,10 @@
             const count = playCounts[song.url] || 0;
 
             document.getElementById('hero-cover').src = song.cover;
-            document.getElementById('hero-title').innerText = `${song.title} (${song.duration || '3:30'})`;
+            document.getElementById('hero-title').innerText = song.title;
             const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
             const t = translations[savedLang] || translations['zh-TW'];
-            document.getElementById('hero-desc').innerHTML = `${t.heroDesc} <strong style="color:var(--accent);">${count}</strong> 次 | ${song.artist}`;
+            document.getElementById('hero-desc').innerHTML = `${t.heroDesc} <strong style="color:var(--accent);">${count}</strong> 次 | ${song.artist} <span style="color:var(--accent);">(${song.realDuration || '載入中...'})</span>`;
         }
 
         function renderNewReleases() {
@@ -1571,9 +1588,11 @@
                         <img src="${song.cover}" class="new-release-thumb" alt="封面">
                         <div class="new-release-info">
                             <div class="new-release-title">${song.title}</div>
-                            <div class="new-release-artist">${song.artist}</div>
+                            <div class="new-release-artist">
+                                <span>${song.artist}</span>
+                                <span class="song-duration-tag" data-url="${song.url}">${song.realDuration || '...'}</span>
+                            </div>
                         </div>
-                        <div class="item-duration">${song.duration || '3:30'}</div>
                         <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleFavorite(event, '${song.url}')">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                         </button>
@@ -1597,9 +1616,11 @@
                         <img src="${song.cover}" class="global12-thumb" alt="封面">
                         <div class="global12-info">
                             <div class="global12-title">${song.title}</div>
-                            <div class="global12-count">${t.playCountText}: ${count} 次</div>
+                            <div class="global12-count">
+                                <span>${t.playCountText}: ${count} 次</span>
+                                <span class="song-duration-tag" data-url="${song.url}">${song.realDuration || '...'}</span>
+                            </div>
                         </div>
-                        <div class="item-duration">${song.duration || '3:30'}</div>
                     </div>`;
             });
         }
@@ -1618,11 +1639,11 @@
                     <div class="album-card" onclick="openModal(); playSong(${originalIndex});">
                         <img src="${song.cover}" alt="${song.title}">
                         <div class="title">${song.title}</div>
-                        <div class="desc">${song.artist}</div>
-                        <div class="card-footer">
-                            <div class="play-count-tag">${t.playCountText}: ${count} 次</div>
-                            <div class="card-duration">${song.duration || '3:30'}</div>
+                        <div class="desc">
+                            <span>${song.artist}</span>
+                            <span class="song-duration-tag" data-url="${song.url}">${song.realDuration || ''}</span>
                         </div>
+                        <div class="play-count-tag">${t.playCountText}: ${count} 次</div>
                     </div>`;
             });
         }
@@ -1644,11 +1665,13 @@
                             <img src="${song.cover}" class="song-thumb" alt="封面">
                             <div style="min-width:0; flex:1;">
                                 <div class="song-title">${song.title}</div>
-                                <div class="song-artist">${song.artist}</div>
+                                <div class="song-artist">
+                                    <span>${song.artist}</span>
+                                    <span class="song-duration-tag" data-url="${song.url}" style="color:var(--accent); font-weight:600;">${song.realDuration || ''}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="song-right-group">
-                            <div class="song-duration-tag">${song.duration || '3:30'}</div>
                             <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleFavorite(event, '${song.url}')">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                             </button>
@@ -1659,7 +1682,7 @@
             });
         }
 
-        // 初始化 Web Audio API 與 環繞聲道/等化器 節點
+        // 初始化 Web Audio API 與 環繞音響 / 聲道調節 / 分析節點
         function initWebAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1674,13 +1697,18 @@
                 bassFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
                 bassFilter.gain.setValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime);
 
-                // 建立左右聲道控制節點 (StereoPannerNode 若支援)
+                // 左右聲道控制節點 (StereoPanner)
                 if (audioCtx.createStereoPanner) {
-                    pannerNode = audioCtx.createStereoPanner();
-                    pannerNode.pan.setValueAtTime(0, audioCtx.currentTime);
+                    stereoPannerNode = audioCtx.createStereoPanner();
+                } else {
+                    stereoPannerNode = null; // 瀏覽器兼容防護
+                }
+
+                // 串接音訊流：Source -> BassFilter -> Panner -> Analyser -> Destination
+                if (stereoPannerNode) {
                     sourceNode.connect(bassFilter);
-                    bassFilter.connect(pannerNode);
-                    pannerNode.connect(analyserNode);
+                    bassFilter.connect(stereoPannerNode);
+                    stereoPannerNode.connect(analyserNode);
                 } else {
                     sourceNode.connect(bassFilter);
                     bassFilter.connect(analyserNode);
@@ -1692,54 +1720,65 @@
             }
         }
 
-        // 動態更新視覺化等化條（同時支援全螢幕底部整排與一般播放列半透明等化條）
+        // 左右聲道手動調節
+        window.setPan = function(val) {
+            if (stereoPannerNode && audioCtx) {
+                stereoPannerNode.pan.linearRampToValueAtTime(parseFloat(val), audioCtx.currentTime + 0.05);
+            }
+            // 同步介面中的滑桿
+            document.querySelectorAll('.pan-slider').forEach(slider => {
+                slider.value = val;
+            });
+        }
+
+        // AI 智慧環繞音響自動調節模式
+        window.toggleSmartSurround = function() {
+            isSmartSurroundActive = !isSmartSurroundActive;
+            const btn = document.getElementById('surround-btn');
+            const modalBtn = document.getElementById('modal-surround-btn');
+            
+            if (btn) btn.classList.toggle('active', isSmartSurroundActive);
+            if (modalBtn) modalBtn.classList.toggle('active', isSmartSurroundActive);
+
+            if (isSmartSurroundActive) {
+                // 自動套用專業環繞音場特效：輕微重低音強化 + 聲道廣域環繞掃描
+                if (!isBassBoosted) toggleBassBoost();
+                if (stereoPannerNode && audioCtx) {
+                    // 自動模擬3D空間環繞微調
+                    stereoPannerNode.pan.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.2);
+                }
+            } else {
+                if (isBassBoosted) toggleBassBoost();
+                if (stereoPannerNode && audioCtx) {
+                    stereoPannerNode.pan.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+                }
+                document.querySelectorAll('.pan-slider').forEach(s => s.value = 0);
+            }
+        }
+
+        // 頻率等化條渲染迴圈（同時支援全螢幕與下方迷你等化條）
         function updateVisualizer() {
             if (!analyserNode || !isPlaying) return;
             const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
             analyserNode.getByteFrequencyData(dataArray);
 
-            // 1. 全螢幕下方整排等化條更新
-            const fullBars = document.querySelectorAll('.v-bar-full');
-            fullBars.forEach((bar, i) => {
+            // 1. 全螢幕等化條
+            const bars = document.querySelectorAll('#visualizer-bars .v-bar');
+            bars.forEach((bar, i) => {
                 const val = dataArray[i] || 10;
-                const height = Math.max(8, (val / 255) * 40);
+                const height = Math.max(6, (val / 255) * 34);
                 bar.style.height = height + 'px';
             });
 
-            // 2. 一般底部播放列半透明等化條更新
-            const bottomBars = document.querySelectorAll('.bottom-v-bar');
-            bottomBars.forEach((bar, i) => {
-                const val = dataArray[i] || 5;
-                const height = Math.max(4, (val / 255) * 20);
+            // 2. 下方常駐播放器迷你等化條
+            const miniBars = document.querySelectorAll('.mini-visualizer .mini-v-bar');
+            miniBars.forEach((bar, i) => {
+                const val = dataArray[i] || 10;
+                const height = Math.max(3, (val / 255) * 22);
                 bar.style.height = height + 'px';
             });
-
-            // 智慧自動環繞音響邏輯
-            if (isAutoPan && pannerNode) {
-                const panVal = Math.sin(Date.now() / 600) * 0.6; // 在 -0.6 到 0.6 之間優雅搖擺
-                pannerNode.pan.setTargetAtTime(panVal, audioCtx.currentTime, 0.1);
-                const slider = document.getElementById('pan-slider');
-                if (slider && document.activeElement !== slider) {
-                    slider.value = panVal.toFixed(2);
-                }
-            }
 
             animationFrameId = requestAnimationFrame(updateVisualizer);
-        }
-
-        window.toggleAutoPan = function() {
-            isAutoPan = !isAutoPan;
-            const btn = document.getElementById('auto-pan-btn');
-            if (btn) btn.classList.toggle('active', isAutoPan);
-        }
-
-        window.setManualPan = function(val) {
-            isAutoPan = false;
-            const btn = document.getElementById('auto-pan-btn');
-            if (btn) btn.classList.remove('active');
-            if (pannerNode && audioCtx) {
-                pannerNode.pan.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.05);
-            }
         }
 
         window.toggleBassBoost = function() {
@@ -1779,9 +1818,6 @@
             modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
             playerStatus.innerText = t.playerPlaying;
             
-            durationTimeEl.innerText = song.duration || "3:30";
-            modalDurationTimeEl.innerText = song.duration || "3:30";
-
             playIcon.innerHTML = pauseSvg;
             modalPlayIcon.innerHTML = pauseSvg;
         }
@@ -1849,8 +1885,7 @@
                 }
 
                 const formattedCurrent = formatTime(audio.currentTime);
-                const song = playlist[currentIndex];
-                const formattedDuration = (song && song.duration) ? song.duration : formatTime(audio.duration);
+                const formattedDuration = formatTime(audio.duration);
                 
                 currentTimeEl.innerText = formattedCurrent;
                 durationTimeEl.innerText = formattedDuration;
@@ -1932,6 +1967,7 @@
         }
 
         function formatTime(seconds) {
+            if (isNaN(seconds) || seconds <= 0) return "0:00";
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60);
             return mins + ":" + (secs < 10 ? "0" : "") + secs;
