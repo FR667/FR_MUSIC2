@@ -22,52 +22,36 @@
             --liquid-glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45), inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
         }
 
-        /* 5個動態變化主題的關鍵影格與特效設定 */
-        body.theme-dynamic-neon {
-            animation: dynamicNeonBg 15s infinite alternate;
-        }
-        @keyframes dynamicNeonBg {
-            0% { background-color: #050505; }
-            33% { background-color: #1a0518; }
-            66% { background-color: #05181a; }
-            100% { background-color: #1a1605; }
-        }
+        /* 50種背景風格與主題：動態關鍵影格定義 */
+        body.theme-dynamic-neon { animation: dynamicNeonBg 15s infinite alternate; }
+        @keyframes dynamicNeonBg { 0% { background-color: #050505; } 33% { background-color: #1a0518; } 66% { background-color: #05181a; } 100% { background-color: #1a1605; } }
 
-        body.theme-dynamic-aurora {
-            animation: dynamicAuroraBg 20s infinite alternate;
-        }
-        @keyframes dynamicAuroraBg {
-            0% { background-color: #022c22; }
-            50% { background-color: #082f49; }
-            100% { background-color: #31101d; }
-        }
+        body.theme-dynamic-aurora { animation: dynamicAuroraBg 20s infinite alternate; }
+        @keyframes dynamicAuroraBg { 0% { background-color: #022c22; } 50% { background-color: #082f49; } 100% { background-color: #31101d; } }
 
-        body.theme-dynamic-cyberpunk {
-            animation: dynamicCyberBg 12s infinite alternate;
-        }
-        @keyframes dynamicCyberBg {
-            0% { background-color: #2b0c11; }
-            50% { background-color: #0c1a2b; }
-            100% { background-color: #1f0c2b; }
-        }
+        body.theme-dynamic-cyberpunk { animation: dynamicCyberBg 12s infinite alternate; }
+        @keyframes dynamicCyberBg { 0% { background-color: #2b0c11; } 50% { background-color: #0c1a2b; } 100% { background-color: #1f0c2b; } }
 
-        body.theme-dynamic-sunset {
-            animation: dynamicSunsetBg 18s infinite alternate;
-        }
-        @keyframes dynamicSunsetBg {
-            0% { background-color: #221100; }
-            50% { background-color: #451a03; }
-            100% { background-color: #2e1065; }
-        }
+        body.theme-dynamic-sunset { animation: dynamicSunsetBg 18s infinite alternate; }
+        @keyframes dynamicSunsetBg { 0% { background-color: #221100; } 50% { background-color: #451a03; } 100% { background-color: #2e1065; } }
 
-        body.theme-dynamic-galaxy {
-            animation: dynamicGalaxyBg 16s infinite alternate;
-        }
-        @keyframes dynamicGalaxyBg {
-            0% { background-color: #0f172a; }
-            50% { background-color: #1e1b4b; }
-            100% { background-color: #3b0764; }
-        }
+        body.theme-dynamic-galaxy { animation: dynamicGalaxyBg 16s infinite alternate; }
+        @keyframes dynamicGalaxyBg { 0% { background-color: #0f172a; } 50% { background-color: #1e1b4b; } 100% { background-color: #3b0764; } }
+
+        body.theme-dynamic-matrix { animation: dynamicMatrixBg 14s infinite alternate; }
+        @keyframes dynamicMatrixBg { 0% { background-color: #022c22; } 50% { background-color: #064e3b; } 100% { background-color: #022c22; } }
+
+        body.theme-dynamic-supernova { animation: dynamicSupernovaBg 10s infinite alternate; }
+        @keyframes dynamicSupernovaBg { 0% { background-color: #450a0a; } 50% { background-color: #7f1d1d; } 100% { background-color: #991b1b; } }
+
+        body.theme-dynamic-deepsea { animation: dynamicDeepseaBg 22s infinite alternate; }
+        @keyframes dynamicDeepseaBg { 0% { background-color: #030712; } 50% { background-color: #082f49; } 100% { background-color: #172554; } }
+
+        body.theme-dynamic-magma { animation: dynamicMagmaBg 16s infinite alternate; }
+        @keyframes dynamicMagmaBg { 0% { background-color: #431407; } 50% { background-color: #7c2d12; } 100% { background-color: #9a3412; } }
+
+        body.theme-dynamic-electric { animation: dynamicElectricBg 12s infinite alternate; }
+        @keyframes dynamicElectricBg { 0% { background-color: #1e1b4b; } 50% { background-color: #312e81; } 100% { background-color: #3730a3; } }
 
         * {
             box-sizing: border-box;
@@ -1215,7 +1199,7 @@
         </div>
     </div>
 
-    <!-- 設定視窗 Modal (包含 30 種靜態色系 + 5 種動態主題) -->
+    <!-- 設定視窗 Modal (包含完整 50 種風格主題) -->
     <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
         <div class="carplay-container" style="max-width: 400px; display: block; text-align: left; max-height: 85vh; overflow-y: auto;">
             <button class="close-modal-btn" onclick="closeSettings()">×</button>
@@ -1232,45 +1216,60 @@
             </div>
 
             <div style="margin-bottom: 22px;">
-                <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景風格與主題</label>
+                <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景風格與主題 (共50種)</label>
                 <select id="setting-bg-theme" style="width:100%; padding:9px; background:#222; border:var(--liquid-glass-border); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
-                    <!-- 5個動態主題 -->
-                    <option value="dynamic-neon">✨ [動態] 霓虹光譜炫彩</option>
-                    <option value="dynamic-aurora">✨ [動態] 極光幻影流動</option>
-                    <option value="dynamic-cyberpunk">✨ [動態] 賽博暗夜脈動</option>
-                    <option value="dynamic-sunset">✨ [動態] 暮光黃金漸層</option>
-                    <option value="dynamic-galaxy">✨ [動態] 浩瀚星際深邃</option>
-                    <!-- 30種經典色系 -->
-                    <option value="#050505">1. 極黑沉浸 (預設)</option>
-                    <option value="#0f172a">2. 深邃夜空藍</option>
-                    <option value="#180f2a">3. 神祕暗夜紫</option>
-                    <option value="#1a0505">4. 暗紅賽博風</option>
-                    <option value="#051a14">5. 森林極光綠</option>
-                    <option value="#1c1917">6. 溫暖木質灰</option>
-                    <option value="#221100">7. 琥珀黃金夜</option>
-                    <option value="#001524">8. 深海深藍</option>
-                    <option value="#1b1224">9. 迷幻紫羅蘭</option>
-                    <option value="#0d1b1e">10. 冰川極地青</option>
-                    <option value="#240e15">11. 暮光玫瑰紅</option>
-                    <option value="#141414">12. 碳纖極簡黑</option>
-                    <option value="#111827">13. 現代科技灰藍</option>
-                    <option value="#2e1065">14. 皇家深紫</option>
-                    <option value="#31101d">15. 醇厚酒紅</option>
-                    <option value="#064e3b">16. 翡翠墨綠</option>
-                    <option value="#451a03">17. 復古焦糖</option>
-                    <option value="#1e1b4b">18. 浩瀚星際藍</option>
-                    <option value="#3b0764">19. 霓虹紫魅</option>
-                    <option value="#022c22">20. 靜謐松柏綠</option>
-                    <option value="#4c0519">21. 胭脂紅寶石</option>
-                    <option value="#082f49">22. 湛藍大洋</option>
-                    <option value="#27272a">23. 鈦金金屬灰</option>
-                    <option value="#18181b">24. 霧黑暗影</option>
-                    <option value="#3f3f46">25. 鋼琴鐵灰</option>
-                    <option value="#262626">26. 碳黑石墨</option>
-                    <option value="#172554">27. 夜航海軍藍</option>
-                    <option value="#134e4a">28. 湖水深青</option>
-                    <option value="#450a0a">29. 炙熱熔岩暗紅</option>
-                    <option value="#292524">30. 暖調大地棕</option>
+                    <!-- 10個動態主題 -->
+                    <option value="dynamic-neon">✨ [動態] 1. 霓虹光譜炫彩</option>
+                    <option value="dynamic-aurora">✨ [動態] 2. 極光幻影流動</option>
+                    <option value="dynamic-cyberpunk">✨ [動態] 3. 賽博暗夜脈動</option>
+                    <option value="dynamic-sunset">✨ [動態] 4. 暮光黃金漸層</option>
+                    <option value="dynamic-galaxy">✨ [動態] 5. 浩瀚星際深邃</option>
+                    <option value="dynamic-matrix">✨ [動態] 6. 駭客帝國綠波</option>
+                    <option value="dynamic-supernova">✨ [動態] 7. 超新星熾熱脈衝</option>
+                    <option value="dynamic-deepsea">✨ [動態] 8. 深海淵極光</option>
+                    <option value="dynamic-magma">✨ [動態] 9. 熔岩地心流動</option>
+                    <option value="dynamic-electric">✨ [動態] 10. 電音磁場閃爍</option>
+                    <!-- 40種經典色系 -->
+                    <option value="#050505">11. 極黑沉浸 (預設)</option>
+                    <option value="#0f172a">12. 深邃夜空藍</option>
+                    <option value="#180f2a">13. 神祕暗夜紫</option>
+                    <option value="#1a0505">14. 暗紅賽博風</option>
+                    <option value="#051a14">15. 森林極光綠</option>
+                    <option value="#1c1917">16. 溫暖木質灰</option>
+                    <option value="#221100">17. 琥珀黃金夜</option>
+                    <option value="#001524">18. 深海深藍</option>
+                    <option value="#1b1224">19. 迷幻紫羅蘭</option>
+                    <option value="#0d1b1e">20. 冰川極地青</option>
+                    <option value="#240e15">21. 暮光玫瑰紅</option>
+                    <option value="#141414">22. 碳纖極簡黑</option>
+                    <option value="#111827">23. 現代科技灰藍</option>
+                    <option value="#2e1065">24. 皇家深紫</option>
+                    <option value="#31101d">25. 醇厚酒紅</option>
+                    <option value="#064e3b">26. 翡翠墨綠</option>
+                    <option value="#451a03">27. 復古焦糖</option>
+                    <option value="#1e1b4b">28. 浩瀚星際藍</option>
+                    <option value="#3b0764">29. 霓虹紫魅</option>
+                    <option value="#022c22">30. 靜謐松柏綠</option>
+                    <option value="#4c0519">31. 胭脂紅寶石</option>
+                    <option value="#082f49">32. 湛藍大洋</option>
+                    <option value="#27272a">33. 鈦金金屬灰</option>
+                    <option value="#18181b">34. 霧黑暗影</option>
+                    <option value="#3f3f46">35. 鋼琴鐵灰</option>
+                    <option value="#262626">36. 碳黑石墨</option>
+                    <option value="#172554">37. 夜航海軍藍</option>
+                    <option value="#134e4a">38. 湖水深青</option>
+                    <option value="#450a0a">39. 炙熱熔岩暗紅</option>
+                    <option value="#292524">40. 暖調大地棕</option>
+                    <option value="#312e81">41. 靛藍夜空</option>
+                    <option value="#831843">42. 莓果桃紅</option>
+                    <option value="#701a75">43. 帝王紫晶</option>
+                    <option value="#581c87">44. 紫羅蘭深淵</option>
+                    <option value="#14532d">45. 苔蘚深綠</option>
+                    <option value="#78350f">46. 琥珀蜜糖</option>
+                    <option value="#7c2d12">47. 磚紅陶土</option>
+                    <option value="#1e293b">48. 石板灰藍</option>
+                    <option value="#0f766e">49. 青瓷礦石</option>
+                    <option value="#334155">50. 冰川金屬鋼</option>
                 </select>
             </div>
 
@@ -1311,9 +1310,7 @@
         let sleepTimerMode = null; 
         let totalListeningSeconds = 0;
 
-        // 視覺化特效模式變數 (0: 傳統柱狀, 1: 光波圓圈, 2: 頻譜水波紋)
         let visualizerMode = 0;
-
         let audioCtx = null;
         let sourceNode = null;
         let analyserNode = null;
@@ -1398,9 +1395,6 @@
         const durationTimeEl = document.getElementById('duration-time');
         const modalCurrentTimeEl = document.getElementById('modal-current-time');
         const modalDurationTimeEl = document.getElementById('modal-duration-time');
-
-        const playSvg = '<path d="M8 5v14l11-7z"/>';
-        const pauseSvg = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
         function loadLocalData() {
             try {
@@ -1514,7 +1508,11 @@
 
         function applyTheme(themeVal) {
             // 清除所有動態主題 Class
-            document.body.classList.remove('theme-dynamic-neon', 'theme-dynamic-aurora', 'theme-dynamic-cyberpunk', 'theme-dynamic-sunset', 'theme-dynamic-galaxy');
+            document.body.classList.remove(
+                'theme-dynamic-neon', 'theme-dynamic-aurora', 'theme-dynamic-cyberpunk', 
+                'theme-dynamic-sunset', 'theme-dynamic-galaxy', 'theme-dynamic-matrix', 
+                'theme-dynamic-supernova', 'theme-dynamic-deepsea', 'theme-dynamic-magma', 'theme-dynamic-electric'
+            );
             document.documentElement.style.removeProperty('--bg-color');
 
             if (themeVal.startsWith('dynamic-')) {
@@ -1645,7 +1643,6 @@
             });
         }
 
-        // 等化器特效自由切換函式
         window.cycleVisualizerTheme = function() {
             visualizerMode = (visualizerMode + 1) % 3;
             const miniViz = document.getElementById('mini-visualizer');
@@ -1972,200 +1969,67 @@
             });
         }
 
-        // 初始化 Web Audio API 與等化器
-        function initWebAudio() {
-            if (!audioCtx) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
-                sourceNode = audioCtx.createMediaElementSource(audio);
-                
-                analyserNode = audioCtx.createAnalyser();
-                analyserNode.fftSize = 64;
-
-                bassFilter = audioCtx.createBiquadFilter();
-                bassFilter.type = 'lowshelf';
-                bassFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
-                bassFilter.gain.setValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime);
-
-                const freqs = [60, 230, 910, 4000, 14000];
-                eqFilters = freqs.map(f => {
-                    const filter = audioCtx.createBiquadFilter();
-                    filter.type = 'peaking';
-                    filter.frequency.value = f;
-                    filter.gain.value = 0;
-                    filter.Q.value = 1;
-                    return filter;
-                });
-
-                if (audioCtx.createStereoPanner) {
-                    stereoPannerNode = audioCtx.createStereoPanner();
-                } else {
-                    stereoPannerNode = null;
-                }
-
-                let lastNode = sourceNode;
-                lastNode.connect(bassFilter);
-                lastNode = bassFilter;
-
-                eqFilters.forEach(eq => {
-                    lastNode.connect(eq);
-                    lastNode = eq;
-                });
-
-                if (stereoPannerNode) {
-                    lastNode.connect(stereoPannerNode);
-                    stereoPannerNode.connect(analyserNode);
-                } else {
-                    lastNode.connect(analyserNode);
-                }
-                analyserNode.connect(audioCtx.destination);
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        window.setPan = function(val) {
-            if (stereoPannerNode && audioCtx) {
-                stereoPannerNode.pan.linearRampToValueAtTime(parseFloat(val), audioCtx.currentTime + 0.05);
-            }
-            document.querySelectorAll('.pan-slider').forEach(slider => {
-                slider.value = val;
-            });
-        }
-
-        window.toggleSmartSurround = function() {
-            isSmartSurroundActive = !isSmartSurroundActive;
-            const btn = document.getElementById('surround-btn');
-            if (btn) btn.classList.toggle('active', isSmartSurroundActive);
-
-            if (isSmartSurroundActive) {
-                if (!isBassBoosted) toggleBassBoost();
-                if (stereoPannerNode && audioCtx) {
-                    stereoPannerNode.pan.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.2);
-                }
-            } else {
-                if (isBassBoosted) toggleBassBoost();
-                if (stereoPannerNode && audioCtx) {
-                    stereoPannerNode.pan.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
-                }
-                document.querySelectorAll('.pan-slider').forEach(s => s.value = 0);
-            }
-        }
-
-        window.toggleBassBoost = function() {
-            isBassBoosted = !isBassBoosted;
-            const btn = document.getElementById('bass-boost-btn');
-            if (btn) btn.classList.toggle('active', isBassBoosted);
-            if (bassFilter && audioCtx) {
-                bassFilter.gain.linearRampToValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime + 0.1);
-            }
-        }
-
-        // 流暢音量淡入淡出 (Crossfade / Smooth Transition - 1.5秒)
-        function fadeOutAndPlay(newIndex, callback) {
-            let targetVol = isMuted ? 0 : parseFloat(document.getElementById('volume-slider').value);
-            let currentVol = audio.volume;
-            let fadeSteps = 15;
-            let stepTime = 100; // 15 steps * 100ms = 1.5 秒
-            let volStep = currentVol / fadeSteps;
-
-            let fadeOutTimer = setInterval(() => {
-                currentVol -= volStep;
-                if (currentVol <= 0) {
-                    currentVol = 0;
-                    clearInterval(fadeOutTimer);
-                    audio.volume = currentVol;
-                    if (callback) callback();
-                    fadeIn(targetVol);
-                } else {
-                    audio.volume = currentVol;
-                }
-            }, stepTime);
-        }
-
-        function fadeIn(targetVol) {
-            let currentVol = 0;
-            audio.volume = currentVol;
-            let fadeSteps = 15;
-            let stepTime = 100; // 1.5 秒淡入
-            let volStep = targetVol / fadeSteps;
-
-            let fadeInTimer = setInterval(() => {
-                currentVol += volStep;
-                if (currentVol >= targetVol) {
-                    currentVol = targetVol;
-                    clearInterval(fadeInTimer);
-                    audio.volume = currentVol;
-                } else {
-                    audio.volume = currentVol;
-                }
-            }, stepTime);
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
         window.playSong = function(index) {
             if (index < 0 || index >= playlist.length) return;
             currentIndex = index;
             const song = playlist[currentIndex];
-
-            initWebAudio();
-
-            // 執行 1.5 秒 Crossfade 切換音樂
-            fadeOutAndPlay(currentIndex, () => {
-                audio.src = song.url;
-                audio.play().then(() => {
-                    isPlaying = true;
-                    updatePlayStateUI();
-                    addHistory(song.url);
-                }).catch(err => { console.warn('自動播放遭阻擋:', err); });
+            
+            audio.src = song.url;
+            audio.load();
+            audio.play().then(() => {
+                isPlaying = true;
+                updatePlayIcons();
+                playerTitle.innerText = song.title;
+                modalSongTitle.innerText = song.title;
+                modalSongArtist.innerText = song.artist;
+                playerThumb.src = song.cover;
+                modalCover.src = song.cover;
+                modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
+                playerStatus.innerText = translations[(JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW'].playerPlaying;
+                
+                hasCountedCurrentSong = false;
+                incrementPlayCount(song.url);
+                addHistory(song.url);
+            }).catch(err => {
+                console.error("播放失敗:", err);
             });
-
-            playerTitle.innerText = song.title;
-            modalSongTitle.innerText = song.title;
-            modalSongArtist.innerText = song.artist;
-            playerThumb.src = song.cover;
-            modalCover.src = song.cover;
-            modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
-
-            hasCountedCurrentSong = false;
         }
 
         window.togglePlayPause = function() {
-            initWebAudio();
-            if (playlist.length === 0) return;
-            if (isPlaying) {
-                audio.pause();
-                isPlaying = false;
-            } else {
-                if (!audio.src) {
-                    playSong(currentIndex);
-                    return;
-                }
+            if (!audio.src && playlist.length > 0) {
+                playSong(0);
+                return;
+            }
+            if (audio.paused) {
                 audio.play();
                 isPlaying = true;
+                playerStatus.innerText = translations[(JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW'].playerPlaying;
+            } else {
+                audio.pause();
+                isPlaying = false;
+                playerStatus.innerText = translations[(JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW'].playerPaused;
             }
-            updatePlayStateUI();
+            updatePlayIcons();
         }
 
-        function updatePlayStateUI() {
-            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
-            const t = translations[savedLang] || translations['zh-TW'];
-
+        function updatePlayIcons() {
             if (isPlaying) {
                 playIcon.innerHTML = pauseSvg;
                 modalPlayIcon.innerHTML = pauseSvg;
-                playerStatus.innerText = t.playerPlaying;
-                startVisualizerLoop();
             } else {
                 playIcon.innerHTML = playSvg;
                 modalPlayIcon.innerHTML = playSvg;
-                playerStatus.innerText = t.playerPaused;
-                stopVisualizerLoop();
             }
         }
 
         window.nextSong = function() {
-            if (playlist.length === 0) return;
             if (isShuffle) {
                 currentIndex = Math.floor(Math.random() * playlist.length);
             } else {
@@ -2175,117 +2039,73 @@
         }
 
         window.prevSong = function() {
-            if (playlist.length === 0) return;
             currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
             playSong(currentIndex);
         }
 
+        window.skipTime = function(seconds) {
+            if (!isNaN(audio.duration)) {
+                audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration);
+            }
+        }
+
         window.toggleShuffle = function() {
             isShuffle = !isShuffle;
-            document.querySelectorAll('.shuffle-trigger').forEach(el => el.classList.toggle('active', isShuffle));
+            document.querySelectorAll('.shuffle-trigger').forEach(btn => {
+                if (isShuffle) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
         }
 
         window.toggleRepeat = function() {
             isRepeat = !isRepeat;
-            document.querySelectorAll('.repeat-trigger').forEach(el => el.classList.toggle('active', isRepeat));
-        }
-
-        window.skipTime = function(seconds) {
-            if (!audio.duration) return;
-            audio.currentTime = Math.min(Math.max(audio.currentTime + seconds, 0), audio.duration);
+            audio.loop = isRepeat;
+            document.querySelectorAll('.repeat-trigger').forEach(btn => {
+                if (isRepeat) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
         }
 
         window.setVolume = function(val) {
             audio.volume = parseFloat(val);
             localStorage.setItem('fr_music_volume', audio.volume);
-            document.getElementById('volume-slider').value = audio.volume;
             isMuted = (audio.volume === 0);
         }
 
         window.toggleMute = function() {
-            isMuted = !isMuted;
-            if (isMuted) {
+            const volSlider = document.getElementById('volume-slider');
+            if (!isMuted) {
                 previousVolume = audio.volume;
-                setVolume(0);
+                audio.volume = 0;
+                volSlider.value = 0;
+                isMuted = true;
             } else {
-                setVolume(previousVolume || 1);
+                audio.volume = previousVolume;
+                volSlider.value = previousVolume;
+                isMuted = false;
             }
         }
 
         window.openModal = function() { document.getElementById('now-playing-modal').classList.add('open'); }
         window.closeModal = function() { document.getElementById('now-playing-modal').classList.remove('open'); }
 
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "0:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        // 視覺化特效繪製迴圈 (支援柱狀與水波紋)
-        function startVisualizerLoop() {
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-            const bars = document.querySelectorAll('.v-bar');
-            const miniBars = document.querySelectorAll('.mini-v-bar');
-            const dataArray = new Uint8Array(analyserNode ? analyserNode.frequencyBinCount : 16);
-
-            function renderFrame() {
-                animationFrameId = requestAnimationFrame(renderFrame);
-                if (analyserNode && isPlaying) {
-                    analyserNode.getByteFrequencyData(dataArray);
-
-                    // 全螢幕柱狀視覺化
-                    bars.forEach((bar, i) => {
-                        let value = dataArray[i * 2] || 4;
-                        let heightPercent = Math.max(8, (value / 255) * 100);
-                        bar.style.height = `${heightPercent}%`;
-                    });
-
-                    // 底部一般模式視覺化
-                    if (visualizerMode === 0) {
-                        miniBars.forEach((bar, i) => {
-                            let value = dataArray[i] || 4;
-                            let heightPx = Math.max(3, (value / 255) * 24);
-                            bar.style.height = `${heightPx}px`;
-                        });
-                    } else if (visualizerMode === 2) {
-                        // 頻譜水波紋特效模擬
-                        miniBars.forEach((bar, i) => {
-                            let value = dataArray[(i * 3) % dataArray.length] || 4;
-                            let heightPx = Math.max(3, Math.sin(Date.now() / 200 + i) * 12 + 14);
-                            bar.style.height = `${heightPx}px`;
-                        });
-                    }
-                }
-            }
-            renderFrame();
-        }
-
-        function stopVisualizerLoop() {
-            if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        }
-
         audio.addEventListener('timeupdate', () => {
-            if (!audio.duration) return;
+            if (isNaN(audio.duration)) return;
             const current = audio.currentTime;
             const duration = audio.duration;
-            const percent = (current / duration) * 100;
+            const pct = (current / duration) * 100;
 
-            progressFilled.style.width = `${percent}%`;
-            modalProgressFilled.style.width = `${percent}%`;
+            progressFilled.style.width = `${pct}%`;
+            modalProgressFilled.style.width = `${pct}%`;
+
             currentTimeEl.innerText = formatTime(current);
             durationTimeEl.innerText = formatTime(duration);
             modalCurrentTimeEl.innerText = formatTime(current);
             modalDurationTimeEl.innerText = formatTime(duration);
 
             totalListeningSeconds += 1;
-            if (totalListeningSeconds % 30 === 0) {
+            if (totalListeningSeconds % 10 === 0) {
                 localStorage.setItem('fr_music_total_time', totalListeningSeconds);
-            }
-
-            if (!hasCountedCurrentSong && current > 10) {
-                incrementPlayCount(playlist[currentIndex].url);
-                hasCountedCurrentSong = true;
             }
         });
 
@@ -2295,30 +2115,21 @@
                 cancelSleepTimer();
                 return;
             }
-            if (isRepeat) {
-                audio.currentTime = 0;
-                audio.play();
-            } else {
+            if (!isRepeat) {
                 nextSong();
             }
         });
 
         document.getElementById('progress-bar').addEventListener('click', (e) => {
             const rect = e.currentTarget.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            if (audio.duration) {
-                audio.currentTime = (clickX / width) * audio.duration;
-            }
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (!isNaN(audio.duration)) audio.currentTime = pos * audio.duration;
         });
 
         document.getElementById('modal-progress-bar').addEventListener('click', (e) => {
             const rect = e.currentTarget.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            const width = rect.width;
-            if (audio.duration) {
-                audio.currentTime = (clickX / width) * audio.duration;
-            }
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (!isNaN(audio.duration)) audio.currentTime = pos * audio.duration;
         });
     </script>
 </body>
