@@ -9,12 +9,13 @@
     <style>
         :root {
             --bg-color: #050505;
-            --surface-color: #121212;
-            --surface-hover: #1e1e1e;
+            --surface-color: rgba(25, 25, 25, 0.65);
+            --surface-hover: rgba(40, 40, 40, 0.75);
             --text-primary: #ffffff;
             --text-secondary: #a7a7a7;
             --accent: #fa243c;
-            --border-color: #282828;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(20px);
         }
 
         * {
@@ -36,19 +37,21 @@
             overflow-x: hidden;
         }
 
-        /* 頂部導覽列 */
+        /* 液態玻璃導覽列 */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(16px);
+            padding: 12px 30px;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             position: sticky;
             top: 0;
             z-index: 100;
             border-bottom: 1px solid var(--border-color);
             gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .logo {
@@ -69,10 +72,22 @@
             object-fit: cover;
             border-radius: 50%;
             transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 0 12px rgba(250, 36, 60, 0.4);
         }
 
         .logo img.rotate-animate {
             transform: rotate(-360deg) scale(1.1);
+        }
+
+        .beta-badge {
+            background: linear-gradient(135deg, #fa243c, #ff7657);
+            color: white;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 10px rgba(250, 36, 60, 0.5);
         }
 
         .search-container {
@@ -85,8 +100,9 @@
             width: 100%;
             padding: 10px 14px 10px 38px;
             border-radius: 500px;
-            border: 1px solid transparent;
-            background-color: #242424;
+            border: 1px solid var(--border-color);
+            background-color: rgba(30, 30, 30, 0.5);
+            backdrop-filter: blur(10px);
             color: var(--text-primary);
             font-size: 14px;
             outline: none;
@@ -95,8 +111,8 @@
 
         .search-bar:focus {
             border-color: var(--accent);
-            background-color: #121212;
-            box-shadow: 0 0 15px rgba(250, 36, 60, 0.15);
+            background-color: rgba(18, 18, 18, 0.85);
+            box-shadow: 0 0 20px rgba(250, 36, 60, 0.25);
         }
 
         .search-icon {
@@ -109,16 +125,64 @@
             height: 15px;
         }
 
-        /* 搜尋即時下拉清單 */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 液態玻璃特效按鈕 */
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 500px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .settings-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-btn:hover { color: var(--text-primary); background: rgba(255, 255, 255, 0.15); transform: rotate(45deg); }
+
+        /* 搜尋即時下拉清單 (液態玻璃風) */
         .search-dropdown {
             position: absolute;
             top: calc(100% + 8px);
             left: 0;
             width: 100%;
-            background: #181818;
+            background: rgba(18, 18, 22, 0.85);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             display: none;
             z-index: 200;
             max-height: 320px;
@@ -137,23 +201,11 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-        .search-result-item:hover { background: var(--surface-hover); }
+        .search-result-item:hover { background: rgba(255,255,255,0.08); }
         .search-result-thumb { width: 34px; height: 34px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
         .search-result-info { min-width: 0; flex: 1; }
         .search-result-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .search-result-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .settings-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        .settings-btn:hover { color: var(--text-primary); background: var(--surface-hover); transform: rotate(45deg); }
 
         /* 主要內容區 */
         main {
@@ -164,13 +216,16 @@
             width: 100%;
         }
 
+        /* 英雄横幅 (液態玻璃質感) */
         .hero-banner {
-            background: linear-gradient(135deg, #2b0c11 0%, #120507 100%);
-            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(43, 12, 17, 0.75) 0%, rgba(18, 5, 7, 0.85) 100%);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 24px;
             padding: 35px 40px;
             margin-bottom: 35px;
-            border: 1px solid rgba(250, 36, 60, 0.2);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(250, 36, 60, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
             gap: 30px;
@@ -186,7 +241,7 @@
             width: 280px;
             height: 280px;
             background: var(--accent);
-            opacity: 0.12;
+            opacity: 0.15;
             border-radius: 50%;
             filter: blur(70px);
             pointer-events: none;
@@ -195,9 +250,9 @@
         .hero-cover {
             width: 150px;
             height: 150px;
-            border-radius: 14px;
+            border-radius: 16px;
             object-fit: cover;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
             flex-shrink: 0;
         }
 
@@ -226,10 +281,6 @@
             color: var(--text-secondary);
             margin-bottom: 20px;
             line-height: 1.5;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .hero-btn {
@@ -241,14 +292,14 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 6px 20px rgba(250, 36, 60, 0.4);
+            box-shadow: 0 8px 25px rgba(250, 36, 60, 0.5);
         }
 
-        .hero-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .hero-btn:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 12px 30px rgba(250, 36, 60, 0.7); }
 
         section h3 {
             font-size: 20px;
@@ -257,49 +308,40 @@
             letter-spacing: -0.3px;
         }
 
-        /* 全新上架專區 (最多15首) */
-        .new-release-grid {
+        /* 區塊格線 (液態玻璃卡片) */
+        .new-release-grid, .global12-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 12px;
             margin-bottom: 40px;
         }
-        .new-release-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--surface-color);
-            padding: 10px 14px;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
-        .new-release-item:hover { background: var(--surface-hover); border-color: var(--border-color); }
-        .new-release-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-        .new-release-info { flex: 1; min-width: 0; }
-        .new-release-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-        .new-release-artist { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 本地播放排行前 #12 專區 */
-        .global12-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-        .global12-item {
+        .new-release-item, .global12-item {
             display: flex;
             align-items: center;
             gap: 12px;
             background: var(--surface-color);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             padding: 10px 14px;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
-            border: 1px solid transparent;
-            transition: all 0.2s;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .global12-item:hover { background: var(--surface-hover); border-color: var(--border-color); }
+
+        .new-release-item:hover, .global12-item:hover { 
+            background: var(--surface-hover); 
+            border-color: rgba(255,255,255,0.2); 
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .new-release-thumb, .global12-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .new-release-info, .global12-info { flex: 1; min-width: 0; }
+        .new-release-title, .global12-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .new-release-artist, .global12-count { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         .global12-rank {
             font-size: 16px;
             font-weight: 800;
@@ -311,12 +353,7 @@
         .global12-item:nth-child(2) .global12-rank { color: #c0c0c0; }
         .global12-item:nth-child(3) .global12-rank { color: #cd7f32; }
 
-        .global12-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-        .global12-info { flex: 1; min-width: 0; }
-        .global12-title { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-        .global12-count { font-size: 11px; color: var(--accent); font-weight: 500; }
-
-        /* 你可能會喜歡網格 */
+        /* 網格卡片 */
         .grid-section {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -326,25 +363,27 @@
 
         .album-card {
             background-color: var(--surface-color);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             padding: 14px;
-            border-radius: 14px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid transparent;
+            border: 1px solid var(--border-color);
         }
 
         .album-card:hover {
             background-color: var(--surface-hover);
-            transform: translateY(-4px);
-            border-color: var(--border-color);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
 
         .album-card img {
             width: 100%;
             aspect-ratio: 1;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-bottom: 12px;
         }
 
@@ -352,7 +391,7 @@
         .album-card .desc { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .album-card .play-count-tag { font-size: 11px; color: var(--accent); margin-top: 6px; font-weight: 500; }
 
-        /* 為您推薦 (隨機) 清單 */
+        /* 推薦歌曲清單 */
         .song-list { display: flex; flex-direction: column; gap: 8px; }
         .song-item {
             display: flex;
@@ -360,30 +399,43 @@
             justify-content: space-between;
             padding: 10px 16px;
             background-color: var(--surface-color);
-            border-radius: 10px;
-            border: 1px solid transparent;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             transition: all 0.25s;
         }
-        .song-item:hover { background-color: var(--surface-hover); border-color: var(--border-color); }
+        .song-item:hover { background-color: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
         .song-info { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
-        .song-thumb { width: 42px; height: 42px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+        .song-thumb { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
         .song-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .song-artist { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .song-right-group {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             flex-shrink: 0;
         }
-        .song-play-count {
-            font-size: 12px;
+        .song-play-count { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+
+        /* 愛心收藏按鈕 */
+        .like-btn {
+            background: transparent;
+            border: none;
             color: var(--text-secondary);
-            font-weight: 500;
+            cursor: pointer;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
         }
+        .like-btn:hover { color: var(--accent); transform: scale(1.2); }
+        .like-btn.liked { color: var(--accent); }
 
         .action-btn {
-            background: transparent;
+            background: rgba(255,255,255,0.05);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             padding: 6px 16px;
@@ -396,25 +448,27 @@
         }
         .action-btn:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--bg-color); }
 
-        /* 底部常駐播放器 */
+        /* 底部常駐液態玻璃播放器 */
         .bottom-player {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             height: 88px;
-            background: rgba(18, 18, 18, 0.95);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 18, 0.82);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             border-top: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
             z-index: 90;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
         }
 
         .player-left { display: flex; align-items: center; gap: 12px; width: 260px; cursor: pointer; min-width: 0; }
-        .player-left img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .player-left img { width: 52px; height: 52px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
         .player-meta { min-width: 0; flex: 1; }
         .player-meta .title { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-meta .status { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -428,8 +482,8 @@
         .play-pause-btn {
             background: var(--text-primary);
             color: var(--bg-color);
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -438,19 +492,20 @@
             border: none;
             transition: all 0.2s;
             flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
         }
-        .play-pause-btn:hover { transform: scale(1.1); }
+        .play-pause-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
 
         .progress-container { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 11px; color: var(--text-secondary); }
-        .progress-bar { flex: 1; height: 6px; background: #4d4d4d; border-radius: 3px; position: relative; cursor: pointer; padding: 4px 0; }
-        .progress-track { width: 100%; height: 4px; background: #4d4d4d; border-radius: 2px; position: relative; overflow: hidden; }
+        .progress-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; padding: 4px 0; }
+        .progress-track { width: 100%; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; position: relative; overflow: hidden; }
         .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 2px; width: 0%; pointer-events: none; }
         .progress-bar:hover .progress-filled { background: var(--accent); }
 
         .player-right { width: 220px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
         .volume-slider { width: 90px; accent-color: var(--text-primary); cursor: pointer; }
 
-        /* 全螢幕播放 Modal */
+        /* 全螢幕播放 Modal (液態玻璃科技風) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -476,7 +531,7 @@
             bottom: -20px;
             background-size: cover;
             background-position: center;
-            filter: blur(55px) brightness(0.4);
+            filter: blur(60px) brightness(0.35);
             transform: scale(1.1);
             z-index: 1;
             transition: background-image 0.6s ease;
@@ -489,7 +544,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 2;
             pointer-events: none;
         }
@@ -497,11 +552,11 @@
         .carplay-container {
             width: 90%;
             max-width: 850px;
-            background: rgba(18, 18, 22, 0.7);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 28px;
+            background: rgba(20, 20, 26, 0.65);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 32px;
             display: flex;
             align-items: center;
             gap: 40px;
@@ -520,11 +575,11 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
             color: var(--text-secondary);
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -534,7 +589,7 @@
             z-index: 20;
             transition: all 0.2s;
         }
-        .close-modal-btn:hover { background: rgba(255,255,255,0.25); color: var(--text-primary); }
+        .close-modal-btn:hover { background: rgba(255,255,255,0.2); color: var(--text-primary); }
 
         .carplay-left {
             position: relative;
@@ -546,7 +601,7 @@
         .carplay-cover {
             width: 100%;
             height: 100%;
-            border-radius: 16px;
+            border-radius: 20px;
             object-fit: cover;
             box-shadow: 0 20px 50px rgba(0,0,0,0.7);
         }
@@ -562,11 +617,11 @@
             gap: 4px;
             height: 30px;
             pointer-events: none;
-            background: rgba(0, 0, 0, 0.35);
-            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 4px 12px;
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         .v-bar {
             width: 3px;
@@ -574,7 +629,7 @@
             border-radius: 3px;
             height: 6px;
             transition: height 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 0 8px var(--accent);
+            box-shadow: 0 0 10px var(--accent);
         }
 
         .carplay-right {
@@ -622,13 +677,15 @@
 
         #audio-player { display: none; }
 
-        /* 手機版極致優化 */
+        /* 手機版極致響應優化 */
         @media(max-width: 768px) {
-            header { padding: 12px 16px; }
-            .logo { font-size: 17px; }
-            .logo img { width: 30px; height: 30px; }
+            header { padding: 10px 16px; }
+            .logo { font-size: 16px; }
+            .logo img { width: 28px; height: 28px; }
             .search-container { max-width: none; flex: 1; }
             .search-bar { padding: 8px 12px 8px 34px; font-size: 13px; }
+            .glass-btn span { display: none; }
+            .glass-btn { padding: 8px; }
             
             main { padding: 16px; }
             .hero-banner { 
@@ -636,21 +693,18 @@
                 text-align: center; 
                 padding: 20px 16px; 
                 gap: 16px; 
-                border-radius: 16px;
+                border-radius: 20px;
                 margin-bottom: 25px;
             }
-            .hero-cover { width: 110px; height: 110px; border-radius: 12px; }
+            .hero-cover { width: 110px; height: 110px; border-radius: 14px; }
             .hero-title { font-size: 20px; }
             .hero-desc { font-size: 12px; margin-bottom: 15px; }
             .hero-btn { padding: 8px 20px; font-size: 12px; }
-            .hero-tag { justify-content: center; font-size: 11px; }
 
             section h3 { font-size: 17px; margin-bottom: 12px; }
             .new-release-grid, .global12-grid { grid-template-columns: 1fr; }
             .grid-section { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 30px; }
-            .album-card { padding: 10px; border-radius: 12px; }
-            .album-card .title { font-size: 13px; }
-            .album-card .desc { font-size: 11px; }
+            .album-card { padding: 10px; border-radius: 14px; }
 
             .song-item { padding: 8px 12px; }
             .song-thumb { width: 38px; height: 38px; }
@@ -660,14 +714,13 @@
             .action-btn { padding: 5px 12px; font-size: 11px; }
 
             .bottom-player { height: 76px; padding: 0 12px; }
-            .player-left { width: 160px; gap: 10px; }
-            .player-left img { width: 44px; height: 44px; border-radius: 6px; }
+            .player-left { width: 150px; gap: 10px; }
+            .player-left img { width: 44px; height: 44px; border-radius: 8px; }
             .player-meta .title { font-size: 12px; }
             .player-meta .status { font-size: 10px; }
             .player-center { max-width: none; flex: 1; padding: 0 4px; gap: 4px; }
-            .player-controls { gap: 12px; }
-            .play-pause-btn { width: 32px; height: 32px; }
-            .ctrl-btn svg { width: 16px; height: 16px; }
+            .player-controls { gap: 10px; }
+            .play-pause-btn { width: 34px; height: 34px; }
             .player-right { display: none; }
 
             .carplay-container {
@@ -689,11 +742,12 @@
 </head>
 <body>
 
-    <!-- 頂部導覽列 -->
+    <!-- 頂部液態玻璃導覽列 -->
     <header>
         <div class="logo" id="brand-title" onclick="onLogoClick()">
             <img src="https://i.ibb.co/m54LF470/Background-Eraser-20260816-214356376.png" id="logo-img" alt="Logo">
-            <span id="nav-brand-text">FR MUSIC(測試版)</span>
+            <span id="nav-brand-text">FR MUSIC</span>
+            <span class="beta-badge">BETA</span>
         </div>
         
         <div class="search-container">
@@ -707,14 +761,24 @@
             </div>
         </div>
 
-        <button class="settings-btn" onclick="openSettings()" title="網站設定">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
+        <div class="header-actions">
+            <button class="glass-btn" onclick="openFavoritesModal()" title="我的最愛收藏">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <span id="btn-fav-text">收藏</span>
+            </button>
+            <button class="glass-btn" onclick="openHistoryModal()" title="播放歷史紀錄">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="btn-history-text">歷史</span>
+            </button>
+            <button class="settings-btn" onclick="openSettings()" title="網站設定">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+        </div>
     </header>
 
     <!-- 主要內容區 -->
     <main>
-        <!-- 1. 最上面：本地 NO.1 播放量最高的歌（附觀看次數） -->
+        <!-- 1. 最上面：本地 NO.1 播放量最高的歌 -->
         <div class="hero-banner" id="hero-banner-box">
             <img class="hero-cover" id="hero-cover" src="" alt="封面">
             <div class="hero-content">
@@ -728,7 +792,7 @@
             </div>
         </div>
 
-        <!-- 2. 全新上架 (最多15首) -->
+        <!-- 2. 全新上架 -->
         <section style="margin-bottom: 35px;">
             <h3 id="section-new-release">✨ 最新上架</h3>
             <div class="new-release-grid" id="new-release-container"></div>
@@ -746,7 +810,7 @@
             <div class="grid-section" id="grid-section-container"></div>
         </section>
 
-        <!-- 5. 為您推薦 (隨機) -->
+        <!-- 5. 為您推薦 -->
         <section>
             <h3 id="section-all-songs">🎶 為您推薦</h3>
             <div class="song-list" id="song-list-container"></div>
@@ -854,6 +918,24 @@
         </div>
     </div>
 
+    <!-- 我的最愛 Modal -->
+    <div class="modal-overlay" id="favorites-modal">
+        <div class="carplay-container" style="max-width: 500px; display: block; max-height: 80vh; overflow-y: auto;">
+            <button class="close-modal-btn" onclick="closeFavoritesModal()">×</button>
+            <h3 style="margin-bottom: 16px;">💖 我的最愛收藏</h3>
+            <div id="favorites-list-container" class="song-list"></div>
+        </div>
+    </div>
+
+    <!-- 歷史紀錄 Modal -->
+    <div class="modal-overlay" id="history-modal">
+        <div class="carplay-container" style="max-width: 500px; display: block; max-height: 80vh; overflow-y: auto;">
+            <button class="close-modal-btn" onclick="closeHistoryModal()">×</button>
+            <h3 style="margin-bottom: 16px;">⏱️ 最近播放歷史紀錄</h3>
+            <div id="history-list-container" class="song-list"></div>
+        </div>
+    </div>
+
     <!-- 設定視窗 Modal -->
     <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
         <div class="carplay-container" style="max-width: 380px; display: block; text-align: left;">
@@ -897,31 +979,20 @@
 
     <audio id="audio-player"></audio>
 
-    <!-- 音樂平台核心邏輯 (改用 localStorage 儲存播放次數) -->
+    <!-- 音樂平台核心邏輯 (完全基於 localStorage) -->
     <script>
-        // ==========================================
-        // 防止查看原始碼與保護機制
-        // ==========================================
-        document.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (
-                e.keyCode === 123 ||
-                (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) ||
-                (e.ctrlKey && e.keyCode === 85)
-            ) {
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 67 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
                 e.preventDefault();
                 return false;
             }
         });
 
-        // ==========================================
-        // 音樂平台核心邏輯
-        // ==========================================
         let playlist = [];
-        let playCounts = {}; // 從 localStorage 讀取的本地播放次數
+        let playCounts = {}; 
+        let favorites = []; // 收藏清單
+        let historyList = []; // 歷史紀錄
         let currentIndex = 0;
         let heroSongIndex = 0;
         let isPlaying = false;
@@ -933,7 +1004,7 @@
 
         const translations = {
             'zh-TW': {
-                pageTitle: "FR MUSIC - 專業頂級音樂平台",
+                pageTitle: "FR MUSIC - Beta 專業音樂平台",
                 searchPlaceholder: "搜尋歌曲、曲風...",
                 hotTitle: "搜尋結果",
                 heroTag: "🔥 本地 NO.1 播放量最高單曲",
@@ -953,10 +1024,12 @@
                 btnSave: "儲存設定",
                 notFound: "找不到符合條件的歌曲",
                 btnPlayList: "播放",
-                playCountText: "點播次數"
+                playCountText: "點播次數",
+                favText: "收藏",
+                historyText: "歷史"
             },
             'en': {
-                pageTitle: "FR MUSIC - Professional Music Platform",
+                pageTitle: "FR MUSIC - Beta Professional Music Platform",
                 searchPlaceholder: "Search songs, genres...",
                 hotTitle: "Search Results",
                 heroTag: "🔥 Local NO.1 Most Streamed Track",
@@ -965,7 +1038,7 @@
                 sectionNewRelease: "✨ New Releases",
                 sectionGlobal12: "🏠 Local Streaming Top #12",
                 sectionYouMayLike: "💖 You May Like",
-                sectionAllSongs: "🎶 Recommended For You (Random)",
+                sectionAllSongs: "🎶 Recommended For You",
                 playerReady: "Ready",
                 playerPlaying: "Playing...",
                 playerPaused: "Paused",
@@ -976,53 +1049,59 @@
                 btnSave: "Save Settings",
                 notFound: "No matching songs found",
                 btnPlayList: "Play",
-                playCountText: "Plays"
+                playCountText: "Plays",
+                favText: "Favs",
+                historyText: "History"
             },
             'ja': {
-                pageTitle: "FR MUSIC - プロフェッショナル音楽プラットフォーム",
+                pageTitle: "FR MUSIC - Beta 音楽プラットフォーム",
                 searchPlaceholder: "曲名やジャンルを検索...",
                 hotTitle: "検索結果",
-                heroTag: "🔥 ローカル NO.1 再生回数最多トラック",
+                heroTag: "🔥 ローカル NO.1 再生回数最多",
                 heroDesc: "総再生回数：",
                 btnPlay: "今すぐ再生",
                 sectionNewRelease: "✨ 新着リリース",
                 sectionGlobal12: "🏠 ローカル再生トップ #12",
                 sectionYouMayLike: "💖 おすすめの楽曲",
-                sectionAllSongs: "🎶 あなたへのおすすめ (ランダム)",
+                sectionAllSongs: "🎶 おすすめ (ランダム)",
                 playerReady: "準備完了",
                 playerPlaying: "再生中...",
                 playerPaused: "一時停止中",
                 settingsTitle: "サイト設定",
-                lblLang: "言語 (Language)",
-                lblBgTheme: "背景テーマ (12種類)",
+                lblLang: "言語",
+                lblBgTheme: "背景テーマ",
                 btnCancel: "キャンセル",
                 btnSave: "保存",
                 notFound: "一致する曲が見つかりませんでした",
                 btnPlayList: "再生",
-                playCountText: "再生回数"
+                playCountText: "再生回数",
+                favText: "お気に入り",
+                historyText: "履歴"
             },
             'ko': {
-                pageTitle: "FR MUSIC - 전문 음악 플랫폼",
+                pageTitle: "FR MUSIC - Beta 전문 음악 플랫폼",
                 searchPlaceholder: "노래, 장르 검색...",
                 hotTitle: "검색 결과",
-                heroTag: "🔥 로컬 NO.1 최다 재생 트랙",
+                heroTag: "🔥 로컬 NO.1 최다 재생",
                 heroDesc: "총 재생 횟수: ",
                 btnPlay: "지금 재생",
                 sectionNewRelease: "✨ 신규 발매",
                 sectionGlobal12: "🏠 로컬 스트리밍 TOP #12",
                 sectionYouMayLike: "💖 추천 음악",
-                sectionAllSongs: "🎶 추천 음원 (랜덤)",
+                sectionAllSongs: "🎶 추천 음원",
                 playerReady: "준비됨",
                 playerPlaying: "재생 중...",
                 playerPaused: "일시 정지",
                 settingsTitle: "사이트 설정",
-                lblLang: "언어 (Language)",
-                lblBgTheme: "배경 테마 (12가지 스타일)",
+                lblLang: "언어",
+                lblBgTheme: "배경 테마",
                 btnCancel: "취소",
-                btnSave: "설정 저장",
+                btnSave: "저장",
                 notFound: "일치하는 노래를 찾을 수 없습니다",
                 btnPlayList: "재생",
-                playCountText: "재생 횟수"
+                playCountText: "재생 횟수",
+                favText: "즐겨찾기",
+                historyText: "기록"
             }
         };
 
@@ -1046,38 +1125,49 @@
         const playSvg = '<path d="M8 5v14l11-7z"/>';
         const pauseSvg = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
-        // 從 localStorage 讀取本地播放次數
-        function fetchPlayCounts() {
+        // 從 localStorage 讀取資料
+        function loadLocalData() {
             try {
-                const savedCounts = localStorage.getItem('fr_music_local_play_counts');
-                if (savedCounts) {
-                    playCounts = JSON.parse(savedCounts);
-                } else {
-                    playCounts = {};
-                }
-            } catch (error) {
-                console.error('從 localStorage 讀取播放次數失敗:', error);
+                playCounts = JSON.parse(localStorage.getItem('fr_music_local_play_counts')) || {};
+                favorites = JSON.parse(localStorage.getItem('fr_music_favorites')) || [];
+                historyList = JSON.parse(localStorage.getItem('fr_music_history')) || [];
+            } catch (e) {
                 playCounts = {};
+                favorites = [];
+                historyList = [];
             }
         }
 
-        // 更新單曲播放次數並寫入 localStorage
-        function incrementGlobalPlayCount(songUrl) {
-            try {
-                const currentCount = playCounts[songUrl] || 0;
-                const newCount = currentCount + 1;
-                playCounts[songUrl] = newCount;
+        function incrementPlayCount(songUrl) {
+            playCounts[songUrl] = (playCounts[songUrl] || 0) + 1;
+            localStorage.setItem('fr_music_local_play_counts', JSON.stringify(playCounts));
+            refreshUI();
+        }
 
-                localStorage.setItem('fr_music_local_play_counts', JSON.stringify(playCounts));
-                refreshUI();
-            } catch (error) {
-                console.error('更新本地播放次數失敗:', error);
+        // 切換我的最愛
+        window.toggleFavorite = function(event, songUrl) {
+            event.stopPropagation();
+            const index = favorites.indexOf(songUrl);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(songUrl);
             }
+            localStorage.setItem('fr_music_favorites', JSON.stringify(favorites));
+            refreshUI();
+        }
+
+        // 新增歷史紀錄
+        function addHistory(songUrl) {
+            historyList = historyList.filter(url => url !== songUrl);
+            historyList.unshift(songUrl);
+            if (historyList.length > 30) historyList.pop(); // 最多保留30筆
+            localStorage.setItem('fr_music_history', JSON.stringify(historyList));
         }
 
         async function loadMusicData() {
             try {
-                fetchPlayCounts();
+                loadLocalData();
                 const response = await fetch(JSON_URL);
                 playlist = await response.json();
                 
@@ -1130,6 +1220,8 @@
             document.getElementById('lbl-bgtheme').innerText = t.lblBgTheme;
             document.getElementById('btn-cancel').innerText = t.btnCancel;
             document.getElementById('btn-save').innerText = t.btnSave;
+            document.getElementById('btn-fav-text').innerText = t.favText;
+            document.getElementById('btn-history-text').innerText = t.historyText;
             refreshUI();
         }
 
@@ -1146,6 +1238,64 @@
 
         window.openSettings = function() { document.getElementById('settings-modal').classList.add('open'); }
         window.closeSettings = function() { document.getElementById('settings-modal').classList.remove('open'); }
+        
+        window.openFavoritesModal = function() {
+            renderFavoritesList();
+            document.getElementById('favorites-modal').classList.add('open');
+        }
+        window.closeFavoritesModal = function() { document.getElementById('favorites-modal').classList.remove('open'); }
+
+        window.openHistoryModal = function() {
+            renderHistoryList();
+            document.getElementById('history-modal').classList.add('open');
+        }
+        window.closeHistoryModal = function() { document.getElementById('history-modal').classList.remove('open'); }
+
+        // 渲染我的最愛清單
+        function renderFavoritesList() {
+            const container = document.getElementById('favorites-list-container');
+            container.innerHTML = '';
+            if (favorites.length === 0) {
+                container.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">尚無收藏的歌曲</div>`;
+                return;
+            }
+            favorites.forEach(url => {
+                const song = playlist.find(s => s.url === url);
+                if (song) {
+                    const originalIndex = playlist.findIndex(s => s.url === url);
+                    container.innerHTML += `
+                        <div class="song-item" onclick="openModal(); playSong(${originalIndex}); closeFavoritesModal();">
+                            <div class="song-info">
+                                <img src="${song.cover}" class="song-thumb" alt="封面">
+                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist}</div></div>
+                            </div>
+                        </div>`;
+                }
+            });
+        }
+
+        // 渲染歷史紀錄清單
+        function renderHistoryList() {
+            const container = document.getElementById('history-list-container');
+            container.innerHTML = '';
+            if (historyList.length === 0) {
+                container.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">尚無播放紀錄</div>`;
+                return;
+            }
+            historyList.forEach(url => {
+                const song = playlist.find(s => s.url === url);
+                if (song) {
+                    const originalIndex = playlist.findIndex(s => s.url === url);
+                    container.innerHTML += `
+                        <div class="song-item" onclick="openModal(); playSong(${originalIndex}); closeHistoryModal();">
+                            <div class="song-info">
+                                <img src="${song.cover}" class="song-thumb" alt="封面">
+                                <div><div class="song-title">${song.title}</div><div class="song-artist">${song.artist}</div></div>
+                            </div>
+                        </div>`;
+                }
+            });
+        }
 
         // 搜尋功能
         window.onSearchInput = function(keyword) {
@@ -1160,8 +1310,7 @@
 
             const matchedSongs = playlist.filter(s => 
                 s.title.toLowerCase().includes(keyword.toLowerCase()) || 
-                s.artist.toLowerCase().includes(keyword.toLowerCase()) ||
-                s.desc.toLowerCase().includes(keyword.toLowerCase())
+                s.artist.toLowerCase().includes(keyword.toLowerCase())
             );
 
             if (matchedSongs.length === 0) {
@@ -1202,17 +1351,13 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 最上方：本地 NO.1 播放量最高的歌
         function setupHeroSection() {
             if (playlist.length === 0) return;
             let mostPlayedIndex = 0;
             let maxCount = -1;
             playlist.forEach((song, idx) => {
                 const cnt = playCounts[song.url] || 0;
-                if (cnt > maxCount) {
-                    maxCount = cnt;
-                    mostPlayedIndex = idx;
-                }
+                if (cnt > maxCount) { maxCount = cnt; mostPlayedIndex = idx; }
             });
 
             heroSongIndex = mostPlayedIndex;
@@ -1226,16 +1371,13 @@
             document.getElementById('hero-desc').innerHTML = `${t.heroDesc} <strong style="color:var(--accent);">${count}</strong> 次 | ${song.artist}`;
         }
 
-        // 全新上架 (最多 15 首)
         function renderNewReleases() {
             const container = document.getElementById('new-release-container');
             if (!container) return;
             container.innerHTML = '';
-
-            const newSongs = [...playlist].slice(0, 15);
-
-            newSongs.forEach((song) => {
+            [...playlist].slice(0, 15).forEach((song) => {
                 const originalIndex = playlist.findIndex(s => s.url === song.url);
+                const isLiked = favorites.includes(song.url);
                 container.innerHTML += `
                     <div class="new-release-item" onclick="openModal(); playSong(${originalIndex});">
                         <img src="${song.cover}" class="new-release-thumb" alt="封面">
@@ -1243,27 +1385,21 @@
                             <div class="new-release-title">${song.title}</div>
                             <div class="new-release-artist">${song.artist}</div>
                         </div>
-                    </div>
-                `;
+                        <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleFavorite(event, '${song.url}')">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </button>
+                    </div>`;
             });
         }
 
-        // 本地播放排行前 #12
         function renderGlobal12() {
             const container = document.getElementById('global12-container');
             if (!container) return;
             container.innerHTML = '';
-
             const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
             const t = translations[savedLang] || translations['zh-TW'];
 
-            const sortedSongs = [...playlist].sort((a, b) => {
-                const countA = playCounts[a.url] || 0;
-                const countB = playCounts[b.url] || 0;
-                return countB - countA;
-            }).slice(0, 12);
-
-            sortedSongs.forEach((song, idx) => {
+            [...playlist].sort((a, b) => (playCounts[b.url] || 0) - (playCounts[a.url] || 0)).slice(0, 12).forEach((song, idx) => {
                 const originalIndex = playlist.findIndex(s => s.url === song.url);
                 const count = playCounts[song.url] || 0;
                 container.innerHTML += `
@@ -1274,23 +1410,18 @@
                             <div class="global12-title">${song.title}</div>
                             <div class="global12-count">${t.playCountText}: ${count} 次</div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        // 你可能會喜歡
         function renderYouMayLike() {
             const gridContainer = document.getElementById('grid-section-container');
             if (!gridContainer) return;
             gridContainer.innerHTML = '';
-            
             const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
             const t = translations[savedLang] || translations['zh-TW'];
 
-            const recommendedSongs = [...playlist].sort(() => 0.5 - Math.random()).slice(0, 4);
-
-            recommendedSongs.forEach((song) => {
+            [...playlist].sort(() => 0.5 - Math.random()).slice(0, 4).forEach((song) => {
                 const originalIndex = playlist.findIndex(s => s.url === song.url);
                 const count = playCounts[song.url] || 0;
                 gridContainer.innerHTML += `
@@ -1299,25 +1430,21 @@
                         <div class="title">${song.title}</div>
                         <div class="desc">${song.artist}</div>
                         <div class="play-count-tag">${t.playCountText}: ${count} 次</div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
-        // 為您推薦 (隨機) 清單
         function renderRandomList() {
             const listContainer = document.getElementById('song-list-container');
             if (!listContainer) return;
             listContainer.innerHTML = '';
-            
             const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
             const t = translations[savedLang] || translations['zh-TW'];
 
-            const randomizedSongs = [...playlist].sort(() => 0.5 - Math.random());
-
-            randomizedSongs.forEach((song) => {
+            [...playlist].sort(() => 0.5 - Math.random()).forEach((song) => {
                 const originalIndex = playlist.findIndex(s => s.url === song.url);
                 const count = playCounts[song.url] || 0;
+                const isLiked = favorites.includes(song.url);
                 listContainer.innerHTML += `
                     <div class="song-item">
                         <div class="song-info" onclick="openModal(); playSong(${originalIndex});">
@@ -1328,11 +1455,13 @@
                             </div>
                         </div>
                         <div class="song-right-group">
+                            <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleFavorite(event, '${song.url}')">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            </button>
                             <div class="song-play-count">${t.playCountText}: ${count} 次</div>
                             <button class="action-btn" onclick="playSong(${originalIndex})">${t.btnPlayList}</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
@@ -1342,6 +1471,7 @@
             if (!song) return;
             
             hasCountedCurrentSong = false;
+            addHistory(song.url);
 
             audio.src = song.url;
             audio.play();
@@ -1386,11 +1516,7 @@
         }
 
         window.nextSong = function() {
-            if (isShuffle) {
-                currentIndex = Math.floor(Math.random() * playlist.length);
-            } else {
-                currentIndex = (currentIndex + 1) % playlist.length;
-            }
+            currentIndex = isShuffle ? Math.floor(Math.random() * playlist.length) : (currentIndex + 1) % playlist.length;
             window.playSong(currentIndex);
         }
 
@@ -1419,13 +1545,10 @@
                 const percent = (audio.currentTime / audio.duration) * 100;
                 updateProgressUI(percent);
                 
-                // 當播放超過 50% 時，記錄一次本地播放次數並寫入 localStorage
                 if (percent >= 50 && !hasCountedCurrentSong) {
                     hasCountedCurrentSong = true;
                     const song = playlist[currentIndex];
-                    if (song) {
-                        incrementGlobalPlayCount(song.url);
-                    }
+                    if (song) incrementPlayCount(song.url);
                 }
 
                 const formattedCurrent = formatTime(audio.currentTime);
@@ -1438,8 +1561,7 @@
 
                 if (isPlaying) {
                     document.querySelectorAll('.v-bar').forEach(bar => {
-                        const randomHeight = Math.floor(Math.random() * 24) + 6;
-                        bar.style.height = randomHeight + 'px';
+                        bar.style.height = (Math.floor(Math.random() * 26) + 6) + 'px';
                     });
                 }
             }
@@ -1458,34 +1580,23 @@
             const getPercent = (e) => {
                 const rect = bar.getBoundingClientRect();
                 const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                let percent = (clientX - rect.left) / rect.width;
-                return Math.max(0, Math.min(1, percent));
+                return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
             };
 
-            const onStart = (e) => {
-                if (!audio.duration) return;
-                isDragging = true;
-                const percent = getPercent(e);
-                updateProgressUI(percent * 100);
-            };
-
+            const onStart = (e) => { if (!audio.duration) return; isDragging = true; updateProgressUI(getPercent(e) * 100); };
             const onMove = (e) => {
                 if (!isDragging || !audio.duration) return;
                 const percent = getPercent(e);
                 updateProgressUI(percent * 100);
-                const previewTime = percent * audio.duration;
-                currentTimeEl.innerText = formatTime(previewTime);
-                modalCurrentTimeEl.innerText = formatTime(previewTime);
+                currentTimeEl.innerText = formatTime(percent * audio.duration);
+                modalCurrentTimeEl.innerText = formatTime(percent * audio.duration);
             };
-
             const onEnd = (e) => {
                 if (!isDragging || !audio.duration) return;
                 isDragging = false;
                 const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
                 const rect = bar.getBoundingClientRect();
-                let percent = (clientX - rect.left) / rect.width;
-                percent = Math.max(0, Math.min(1, percent));
-                audio.currentTime = percent * audio.duration;
+                audio.currentTime = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * audio.duration;
             };
 
             bar.addEventListener('mousedown', onStart);
