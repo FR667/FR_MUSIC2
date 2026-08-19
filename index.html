@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title id="page-title">FR MUSIC - 專業音樂串流平台(測試版)</title>
+    <title id="page-title">FR MUSIC - Beta 專業音樂串流平台</title>
     <!-- 網站標籤圖示 (Favicon) -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg">
     <style>
@@ -16,6 +16,9 @@
             --accent: #fa243c;
             --border-color: rgba(255, 255, 255, 0.08);
             --glass-blur: blur(20px);
+            --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.14);
+            --liquid-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
         }
 
         * {
@@ -100,19 +103,21 @@
             width: 100%;
             padding: 10px 14px 10px 38px;
             border-radius: 500px;
-            border: 1px solid var(--border-color);
-            background-color: rgba(30, 30, 30, 0.5);
-            backdrop-filter: blur(10px);
+            border: var(--liquid-glass-border);
+            background: var(--liquid-glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             color: var(--text-primary);
             font-size: 14px;
             outline: none;
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .search-bar:focus {
             border-color: var(--accent);
-            background-color: rgba(18, 18, 18, 0.85);
-            box-shadow: 0 0 20px rgba(250, 36, 60, 0.25);
+            background: rgba(25, 25, 25, 0.85);
+            box-shadow: 0 0 20px rgba(250, 36, 60, 0.25), var(--liquid-glass-shadow);
         }
 
         .search-icon {
@@ -131,21 +136,22 @@
             gap: 10px;
         }
 
-        /* 液態玻璃特效按鈕 */
+        /* 液態玻璃特效按鈕升級 */
         .glass-btn {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-secondary);
+            background: var(--liquid-glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: var(--liquid-glass-border);
+            color: var(--text-primary);
             cursor: pointer;
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 500px;
             font-size: 12px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -154,16 +160,17 @@
             color: var(--text-primary);
             border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 1px 2px 0 rgba(255, 255, 255, 0.4);
         }
 
         .settings-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--liquid-glass-bg);
+            border: var(--liquid-glass-border);
             color: var(--text-secondary);
             cursor: pointer;
-            padding: 8px;
+            padding: 9px;
             border-radius: 50%;
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.3s;
             display: flex;
             align-items: center;
@@ -180,7 +187,7 @@
             background: rgba(18, 18, 22, 0.85);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--border-color);
+            border: var(--liquid-glass-border);
             border-radius: 16px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.7);
             display: none;
@@ -225,7 +232,7 @@
             padding: 35px 40px;
             margin-bottom: 35px;
             border: 1px solid rgba(250, 36, 60, 0.3);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             gap: 30px;
@@ -283,10 +290,13 @@
             line-height: 1.5;
         }
 
+        /* 液態玻璃按鈕升級 */
         .hero-btn {
-            background: var(--accent);
+            background: var(--liquid-glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(250, 36, 60, 0.5);
             color: #fff;
-            border: none;
             padding: 10px 24px;
             border-radius: 500px;
             font-size: 13px;
@@ -296,10 +306,10 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 8px 25px rgba(250, 36, 60, 0.5);
+            box-shadow: 0 8px 25px rgba(250, 36, 60, 0.4), inset 0 1px 2px rgba(255,255,255,0.3);
         }
 
-        .hero-btn:hover { transform: scale(1.05); filter: brightness(1.1); box-shadow: 0 12px 30px rgba(250, 36, 60, 0.7); }
+        .hero-btn:hover { transform: scale(1.05); background: var(--accent); border-color: var(--accent); box-shadow: 0 12px 30px rgba(250, 36, 60, 0.7); }
 
         section h3 {
             font-size: 20px;
@@ -320,21 +330,22 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: var(--surface-color);
+            background: var(--liquid-glass-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
             padding: 10px 14px;
             border-radius: 14px;
             cursor: pointer;
-            border: 1px solid var(--border-color);
+            border: var(--liquid-glass-border);
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .new-release-item:hover, .global12-item:hover { 
             background: var(--surface-hover); 
-            border-color: rgba(255,255,255,0.2); 
+            border-color: rgba(255,255,255,0.25); 
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
         }
 
         .new-release-thumb, .global12-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
@@ -362,21 +373,22 @@
         }
 
         .album-card {
-            background-color: var(--surface-color);
+            background: var(--liquid-glass-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
             padding: 14px;
             border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid var(--border-color);
+            border: var(--liquid-glass-border);
+            box-shadow: var(--liquid-glass-shadow);
         }
 
         .album-card:hover {
-            background-color: var(--surface-hover);
+            background: var(--surface-hover);
             transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.3);
         }
 
         .album-card img {
@@ -398,14 +410,15 @@
             align-items: center;
             justify-content: space-between;
             padding: 10px 16px;
-            background-color: var(--surface-color);
+            background: var(--liquid-glass-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            border: var(--liquid-glass-border);
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.25s;
         }
-        .song-item:hover { background-color: var(--surface-hover); border-color: rgba(255,255,255,0.2); }
+        .song-item:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.25); }
         .song-info { display: flex; align-items: center; gap: 14px; flex: 1; cursor: pointer; min-width: 0; }
         .song-thumb { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
         .song-title { font-size: 14px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -434,19 +447,21 @@
         .like-btn:hover { color: var(--accent); transform: scale(1.2); }
         .like-btn.liked { color: var(--accent); }
 
+        /* 液態玻璃動作按鈕 */
         .action-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border-color);
+            background: var(--liquid-glass-bg);
+            border: var(--liquid-glass-border);
             color: var(--text-primary);
             padding: 6px 16px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.2s;
             flex-shrink: 0;
         }
-        .action-btn:hover { border-color: var(--text-primary); background: var(--text-primary); color: var(--bg-color); }
+        .action-btn:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
 
         /* 底部常駐液態玻璃播放器 */
         .bottom-player {
@@ -458,7 +473,7 @@
             background: rgba(15, 15, 18, 0.82);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
-            border-top: 1px solid var(--border-color);
+            border-top: var(--liquid-glass-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -496,10 +511,46 @@
         }
         .play-pause-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
 
-        .progress-container { display: flex; align-items: center; gap: 10px; width: 100%; font-size: 11px; color: var(--text-secondary); }
-        .progress-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; cursor: pointer; padding: 4px 0; }
-        .progress-track { width: 100%; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; position: relative; overflow: hidden; }
-        .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 2px; width: 0%; pointer-events: none; }
+        /* [修復進度對齊] 完美對齊時間標籤與進度軸 */
+        .progress-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            width: 100%; 
+            font-size: 11px; 
+            color: var(--text-secondary); 
+        }
+        .progress-container span {
+            min-width: 30px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .progress-bar { 
+            flex: 1; 
+            height: 16px; 
+            display: flex;
+            align-items: center;
+            position: relative; 
+            cursor: pointer; 
+        }
+        .progress-track { 
+            width: 100%; 
+            height: 6px; 
+            background: rgba(255,255,255,0.15); 
+            border-radius: 3px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .progress-filled { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            height: 100%; 
+            background: var(--text-primary); 
+            border-radius: 3px; 
+            width: 0%; 
+            pointer-events: none; 
+        }
         .progress-bar:hover .progress-filled { background: var(--accent); }
 
         .player-right { width: 220px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
@@ -555,13 +606,13 @@
             background: rgba(20, 20, 26, 0.65);
             backdrop-filter: blur(35px);
             -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: var(--liquid-glass-border);
             border-radius: 32px;
             display: flex;
             align-items: center;
             gap: 40px;
             padding: 40px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.2);
             position: relative;
             z-index: 10;
             transform: scale(0.95) translateY(20px);
@@ -575,8 +626,8 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--liquid-glass-bg);
+            border: var(--liquid-glass-border);
             color: var(--text-secondary);
             width: 34px;
             height: 34px;
@@ -587,6 +638,7 @@
             font-size: 16px;
             cursor: pointer;
             z-index: 20;
+            box-shadow: var(--liquid-glass-shadow);
             transition: all 0.2s;
         }
         .close-modal-btn:hover { background: rgba(255,255,255,0.2); color: var(--text-primary); }
@@ -606,7 +658,7 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.7);
         }
 
-        /* 等化器動畫 */
+        /* [改善 1] 升級真實感的動態波形等化器 (Waveform Visualizer) */
         .visualizer-bars {
             position: absolute;
             bottom: -16px;
@@ -614,22 +666,24 @@
             transform: translateX(-50%);
             display: flex;
             align-items: flex-end;
-            gap: 4px;
-            height: 30px;
+            gap: 3px;
+            height: 32px;
             pointer-events: none;
-            background: rgba(0, 0, 0, 0.45);
-            padding: 4px 12px;
+            background: rgba(10, 10, 15, 0.65);
+            padding: 5px 14px;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: var(--liquid-glass-border);
+            box-shadow: var(--liquid-glass-shadow);
         }
         .v-bar {
             width: 3px;
-            background: var(--accent);
+            background: linear-gradient(to top, var(--accent), #ff7657);
             border-radius: 3px;
             height: 6px;
-            transition: height 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-            box-shadow: 0 0 10px var(--accent);
+            transition: height 0.15s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 8px rgba(250, 36, 60, 0.6);
         }
 
         .carplay-right {
@@ -876,10 +930,12 @@
             
             <div class="carplay-left">
                 <img class="carplay-cover" id="modal-cover" src="" alt="封面">
+                <!-- 動態擬真等化條 -->
                 <div class="visualizer-bars" id="visualizer-bars">
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
+                    <div class="v-bar"></div><div class="v-bar"></div>
                 </div>
             </div>
 
@@ -944,7 +1000,7 @@
             
             <div style="margin-bottom: 14px;">
                 <label id="lbl-language" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">語言 (Language)</label>
-                <select id="setting-language" style="width:100%; padding:9px; background:#222; border:1px solid var(--border-color); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
+                <select id="setting-language" style="width:100%; padding:9px; background:#222; border:var(--liquid-glass-border); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
                     <option value="zh-TW">繁體中文</option>
                     <option value="en">English (英文)</option>
                     <option value="ja">日本語 (日文)</option>
@@ -954,7 +1010,7 @@
 
             <div style="margin-bottom: 22px;">
                 <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景色系 (12種風格)</label>
-                <select id="setting-bg-theme" style="width:100%; padding:9px; background:#222; border:1px solid var(--border-color); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
+                <select id="setting-bg-theme" style="width:100%; padding:9px; background:#222; border:var(--liquid-glass-border); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
                     <option value="#050505">1. 極黑沉浸 (預設)</option>
                     <option value="#0f172a">2. 深邃夜空藍</option>
                     <option value="#180f2a">3. 神祕暗夜紫</option>
@@ -979,7 +1035,7 @@
 
     <audio id="audio-player"></audio>
 
-    <!-- 音樂平台核心邏輯 (完全基於 localStorage) -->
+    <!-- 音樂平台核心邏輯 -->
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
         document.addEventListener('keydown', e => {
@@ -991,8 +1047,8 @@
 
         let playlist = [];
         let playCounts = {}; 
-        let favorites = []; // 收藏清單
-        let historyList = []; // 歷史紀錄
+        let favorites = [];
+        let historyList = [];
         let currentIndex = 0;
         let heroSongIndex = 0;
         let isPlaying = false;
@@ -1125,7 +1181,6 @@
         const playSvg = '<path d="M8 5v14l11-7z"/>';
         const pauseSvg = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
 
-        // 從 localStorage 讀取資料
         function loadLocalData() {
             try {
                 playCounts = JSON.parse(localStorage.getItem('fr_music_local_play_counts')) || {};
@@ -1144,7 +1199,6 @@
             refreshUI();
         }
 
-        // 切換我的最愛
         window.toggleFavorite = function(event, songUrl) {
             event.stopPropagation();
             const index = favorites.indexOf(songUrl);
@@ -1157,11 +1211,10 @@
             refreshUI();
         }
 
-        // 新增歷史紀錄
         function addHistory(songUrl) {
             historyList = historyList.filter(url => url !== songUrl);
             historyList.unshift(songUrl);
-            if (historyList.length > 30) historyList.pop(); // 最多保留30筆
+            if (historyList.length > 30) historyList.pop();
             localStorage.setItem('fr_music_history', JSON.stringify(historyList));
         }
 
@@ -1251,7 +1304,6 @@
         }
         window.closeHistoryModal = function() { document.getElementById('history-modal').classList.remove('open'); }
 
-        // 渲染我的最愛清單
         function renderFavoritesList() {
             const container = document.getElementById('favorites-list-container');
             container.innerHTML = '';
@@ -1274,7 +1326,6 @@
             });
         }
 
-        // 渲染歷史紀錄清單
         function renderHistoryList() {
             const container = document.getElementById('history-list-container');
             container.innerHTML = '';
@@ -1297,7 +1348,6 @@
             });
         }
 
-        // 搜尋功能
         window.onSearchInput = function(keyword) {
             const dropdown = document.getElementById('search-dropdown');
             const resultsList = document.getElementById('search-results-list');
@@ -1561,7 +1611,7 @@
 
                 if (isPlaying) {
                     document.querySelectorAll('.v-bar').forEach(bar => {
-                        bar.style.height = (Math.floor(Math.random() * 26) + 6) + 'px';
+                        bar.style.height = (Math.floor(Math.random() * 28) + 6) + 'px';
                     });
                 }
             }
