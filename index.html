@@ -485,7 +485,7 @@
         .player-meta .title { font-size: 13px; font-weight: 600; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .player-meta .status { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        /* 一般模式下的半透明等化條（嵌入在左側專輯右邊、右側控制按鈕之間，不影響原排版） */
+        /* 一般模式下的半透明等化條 */
         .mini-visualizer {
             display: flex;
             align-items: flex-end;
@@ -680,7 +680,7 @@
         }
         .carplay-cover:hover { transform: scale(1.02); }
 
-        /* 需求修改：全螢幕時，等化條改放在整個播放卡片下方一整排 */
+        /* 全螢幕時等化條放在整個播放卡片下方一整排 */
         .visualizer-bars-fullscreen {
             position: absolute;
             bottom: -32px;
@@ -794,7 +794,7 @@
             .player-left img { width: 40px; height: 40px; border-radius: 8px; }
             .player-meta .title { font-size: 11px; }
             .player-meta .status { font-size: 9px; }
-            .mini-visualizer { display: none; } /* 行動版隱藏迷你等化條以防擁擠 */
+            .mini-visualizer { display: none; }
             .player-center { max-width: none; flex: 1; padding: 0 4px; gap: 4px; }
             .player-controls { gap: 10px; }
             .play-pause-btn { width: 32px; height: 32px; }
@@ -903,7 +903,7 @@
             </div>
         </div>
 
-        <!-- 需求修改：一般模式半透明等化條，顯示在左側專輯右邊、右側控制按鈕之間，不影響原排版 -->
+        <!-- 一般模式半透明等化條 -->
         <div class="mini-visualizer" id="mini-visualizer">
             <div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div>
             <div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div><div class="mini-v-bar"></div>
@@ -967,7 +967,7 @@
             
             <div class="carplay-left">
                 <img class="carplay-cover" id="modal-cover" src="" alt="封面">
-                <!-- 需求修改：全螢幕時等化條改放在整個播放卡片下方一整排 -->
+                <!-- 全螢幕時等化條改放在整個播放卡片下方一整排 -->
                 <div class="visualizer-bars-fullscreen" id="visualizer-bars">
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
@@ -982,7 +982,6 @@
                 <div class="carplay-song-artist" id="modal-song-artist">作者</div>
 
                 <div class="carplay-controls-area">
-                    <!-- 全螢幕聲道與環繞控制輔助列 -->
                     <div style="display: flex; gap: 10px; align-items: center; justify-content: flex-start; font-size: 11px; color: var(--text-secondary);">
                         <span>聲道平衡 (Pan):</span>
                         <input type="range" style="width: 100px; accent-color: var(--accent);" min="-1" max="1" step="0.05" value="0" oninput="setPan(this.value); document.getElementById('pan-slider').value=this.value;">
@@ -1131,7 +1130,6 @@
         let isBassBoosted = false;
         let isSmartSurroundActive = false;
 
-        // Web Audio API 相關變數
         let audioCtx = null;
         let sourceNode = null;
         let analyserNode = null;
@@ -1333,13 +1331,10 @@
                 playerThumb.src = song.cover;
                 modalCover.src = song.cover;
                 modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
-                
-                // 預先載入第一首曲子的真實長度顯示
                 preloadSongDurations();
             }
         }
 
-        // 動態讀取真實音樂長度並更新 UI
         function preloadSongDurations() {
             playlist.forEach((song, idx) => {
                 if (!song.realDuration) {
@@ -1682,7 +1677,6 @@
             });
         }
 
-        // 初始化 Web Audio API 與 環繞音響 / 聲道調節 / 分析節點
         function initWebAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1697,14 +1691,12 @@
                 bassFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
                 bassFilter.gain.setValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime);
 
-                // 左右聲道控制節點 (StereoPanner)
                 if (audioCtx.createStereoPanner) {
                     stereoPannerNode = audioCtx.createStereoPanner();
                 } else {
-                    stereoPannerNode = null; // 瀏覽器兼容防護
+                    stereoPannerNode = null;
                 }
 
-                // 串接音訊流：Source -> BassFilter -> Panner -> Analyser -> Destination
                 if (stereoPannerNode) {
                     sourceNode.connect(bassFilter);
                     bassFilter.connect(stereoPannerNode);
@@ -1720,18 +1712,15 @@
             }
         }
 
-        // 左右聲道手動調節
         window.setPan = function(val) {
             if (stereoPannerNode && audioCtx) {
                 stereoPannerNode.pan.linearRampToValueAtTime(parseFloat(val), audioCtx.currentTime + 0.05);
             }
-            // 同步介面中的滑桿
             document.querySelectorAll('.pan-slider').forEach(slider => {
                 slider.value = val;
             });
         }
 
-        // AI 智慧環繞音響自動調節模式
         window.toggleSmartSurround = function() {
             isSmartSurroundActive = !isSmartSurroundActive;
             const btn = document.getElementById('surround-btn');
@@ -1741,10 +1730,8 @@
             if (modalBtn) modalBtn.classList.toggle('active', isSmartSurroundActive);
 
             if (isSmartSurroundActive) {
-                // 自動套用專業環繞音場特效：輕微重低音強化 + 聲道廣域環繞掃描
                 if (!isBassBoosted) toggleBassBoost();
                 if (stereoPannerNode && audioCtx) {
-                    // 自動模擬3D空間環繞微調
                     stereoPannerNode.pan.linearRampToValueAtTime(0.15, audioCtx.currentTime + 0.2);
                 }
             } else {
@@ -1756,13 +1743,11 @@
             }
         }
 
-        // 頻率等化條渲染迴圈（同時支援全螢幕與下方迷你等化條）
         function updateVisualizer() {
             if (!analyserNode || !isPlaying) return;
             const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
             analyserNode.getByteFrequencyData(dataArray);
 
-            // 1. 全螢幕等化條
             const bars = document.querySelectorAll('#visualizer-bars .v-bar');
             bars.forEach((bar, i) => {
                 const val = dataArray[i] || 10;
@@ -1770,7 +1755,6 @@
                 bar.style.height = height + 'px';
             });
 
-            // 2. 下方常駐播放器迷你等化條
             const miniBars = document.querySelectorAll('.mini-visualizer .mini-v-bar');
             miniBars.forEach((bar, i) => {
                 const val = dataArray[i] || 10;
