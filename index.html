@@ -624,7 +624,7 @@
         }
         .carplay-cover:hover { transform: scale(1.02); }
 
-        /* [大幅升級] 更長、更自然、更有律動感的等化器 (Waveform Visualizer) */
+        /* [極致絲滑升級] 優化貝茲曲線、過渡秒數與彈性律動感 */
         .visualizer-bars {
             position: absolute;
             bottom: -22px;
@@ -648,7 +648,8 @@
             background: linear-gradient(to top, var(--accent), #ff9176, #ffffff);
             border-radius: 4px;
             height: 8px;
-            transition: height 0.12s cubic-bezier(0.2, 1, 0.3, 1);
+            /* 改用更長、具備慣性彈性的貝茲曲線，讓跳動過程極致絲滑流暢 */
+            transition: height 0.22s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 0 10px rgba(250, 36, 60, 0.7);
         }
 
@@ -898,7 +899,7 @@
             
             <div class="carplay-left">
                 <img class="carplay-cover" id="modal-cover" src="" alt="封面">
-                <!-- 升級後的等化條：更多條數、更自然高挑 -->
+                <!-- 絲滑流暢的等化條 -->
                 <div class="visualizer-bars" id="visualizer-bars">
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
@@ -961,7 +962,7 @@
         </div>
     </div>
 
-    <!-- 設定視窗 Modal (背景色擴充至30種) -->
+    <!-- 設定視窗 Modal -->
     <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
         <div class="carplay-container" style="max-width: 400px; display: block; text-align: left; max-height: 85vh; overflow-y: auto;">
             <button class="close-modal-btn" onclick="closeSettings()">×</button>
