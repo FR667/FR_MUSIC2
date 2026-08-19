@@ -2,6 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <!-- 優化行動裝置網址列高度跳動：引入 100dvh -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title id="page-title">FR MUSIC - Beta 專業音樂串流平台</title>
     <!-- 網站標籤圖示 (Favicon) -->
@@ -33,6 +34,7 @@
             background-color: var(--bg-color);
             color: var(--text-primary);
             min-height: 100vh;
+            min-height: 100dvh; /* 現代化高度設定 */
             display: flex;
             flex-direction: column;
             padding-bottom: 110px;
@@ -517,11 +519,26 @@
         .progress-container span { min-width: 30px; text-align: center; flex-shrink: 0; }
         .progress-bar { flex: 1; height: 16px; display: flex; align-items: center; position: relative; cursor: pointer; }
         .progress-track { width: 100%; height: 6px; background: rgba(255,255,255,0.15); border-radius: 3px; position: relative; overflow: hidden; }
-        .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 3px; width: 0%; pointer-events: none; transition: width 0.1s linear; }
+        .progress-filled { position: absolute; top: 0; left: 0; height: 100%; background: var(--text-primary); border-radius: 3px; width: 0%; pointer-events: none; transition: width 0.05s linear; }
         .progress-bar:hover .progress-filled { background: var(--accent); }
 
-        .player-right { width: 220px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
-        .volume-slider { width: 90px; accent-color: var(--text-primary); cursor: pointer; }
+        .player-right { width: 240px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+        .volume-slider { width: 80px; accent-color: var(--text-primary); cursor: pointer; }
+
+        /* 特效按鈕（重低音、佇列） */
+        .extra-ctrl-btn {
+            background: var(--liquid-glass-bg);
+            border: var(--liquid-glass-border);
+            color: var(--text-secondary);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .extra-ctrl-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.3); }
+        .extra-ctrl-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 12px rgba(250, 36, 60, 0.6); }
 
         /* 全螢幕播放 Modal */
         .modal-overlay {
@@ -624,7 +641,7 @@
         }
         .carplay-cover:hover { transform: scale(1.02); }
 
-        /* [極致絲滑升級] 優化貝茲曲線、過渡秒數與彈性律動感 */
+        /* 真實 Web Audio API 等化條視覺化 */
         .visualizer-bars {
             position: absolute;
             bottom: -22px;
@@ -648,8 +665,7 @@
             background: linear-gradient(to top, var(--accent), #ff9176, #ffffff);
             border-radius: 4px;
             height: 8px;
-            /* 改用更長、具備慣性彈性的貝茲曲線，讓跳動過程極致絲滑流暢 */
-            transition: height 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: height 0.08s ease;
             box-shadow: 0 0 10px rgba(250, 36, 60, 0.7);
         }
 
@@ -735,7 +751,7 @@
             .action-btn { padding: 5px 12px; font-size: 11px; }
 
             .bottom-player { height: 76px; padding: 0 12px; }
-            .player-left { width: 150px; gap: 10px; }
+            .player-left { width: 140px; gap: 10px; }
             .player-left img { width: 44px; height: 44px; border-radius: 8px; }
             .player-meta .title { font-size: 12px; }
             .player-meta .status { font-size: 10px; }
@@ -749,7 +765,7 @@
                 width: 95%;
                 padding: 24px 16px;
                 gap: 20px;
-                max-height: 88vh;
+                max-height: 88dvh;
                 border-radius: 24px;
             }
             .carplay-left { width: 180px; height: 180px; }
@@ -792,6 +808,10 @@
             <button class="glass-btn" onclick="openHistoryModal()" title="播放歷史紀錄">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span id="btn-history-text">歷史</span>
+            </button>
+            <button class="glass-btn" onclick="openQueueModal()" title="播放佇列管理">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <span>佇列</span>
             </button>
             <button class="settings-btn" onclick="openSettings()" title="網站設定">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06-.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -886,7 +906,10 @@
         </div>
 
         <div class="player-right">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            <button id="bass-boost-btn" class="extra-ctrl-btn" onclick="toggleBassBoost()" title="重低音加強">BASS</button>
+            <button id="mute-btn" class="ctrl-btn" onclick="toggleMute()" title="靜音切換">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </button>
             <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)">
         </div>
     </div>
@@ -899,7 +922,7 @@
             
             <div class="carplay-left">
                 <img class="carplay-cover" id="modal-cover" src="" alt="封面">
-                <!-- 絲滑流暢的等化條 -->
+                <!-- 真實 Audio Analyser 等化條 -->
                 <div class="visualizer-bars" id="visualizer-bars">
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
                     <div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div><div class="v-bar"></div>
@@ -962,6 +985,15 @@
         </div>
     </div>
 
+    <!-- 播放佇列 Modal -->
+    <div class="modal-overlay" id="queue-modal">
+        <div class="carplay-container" style="max-width: 500px; display: block; max-height: 80vh; overflow-y: auto;">
+            <button class="close-modal-btn" onclick="closeQueueModal()">×</button>
+            <h3 style="margin-bottom: 16px;">🎶 播放佇列 (Up Next)</h3>
+            <div id="queue-list-container" class="song-list"></div>
+        </div>
+    </div>
+
     <!-- 設定視窗 Modal -->
     <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
         <div class="carplay-container" style="max-width: 400px; display: block; text-align: left; max-height: 85vh; overflow-y: auto;">
@@ -1021,7 +1053,7 @@
         </div>
     </div>
 
-    <audio id="audio-player"></audio>
+    <audio id="audio-player" crossorigin="anonymous"></audio>
 
     <!-- 音樂平台核心邏輯 -->
     <script>
@@ -1043,8 +1075,24 @@
         let isShuffle = false;
         let isRepeat = false;
         let hasCountedCurrentSong = false;
+        let previousVolume = 1;
+        let isMuted = false;
+        let isBassBoosted = false;
+
+        // Web Audio API 相關變數
+        let audioCtx = null;
+        let sourceNode = null;
+        let analyserNode = null;
+        let bassFilter = null;
+        let animationFrameId = null;
 
         const JSON_URL = "https://raw.githubusercontent.com/FR667/FR_MUSIC/refs/heads/main/data.json";
+
+        // 本地備用 Fallback 資料，確保遠端斷線時能完美運作
+        const FALLBACK_PLAYLIST = [
+            { title: "範例音樂 1 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "範例音樂 2 (FallBack)", artist: "FR MUSIC", cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg", url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" }
+        ];
 
         const translations = {
             'zh-TW': {
@@ -1174,6 +1222,13 @@
                 playCounts = JSON.parse(localStorage.getItem('fr_music_local_play_counts')) || {};
                 favorites = JSON.parse(localStorage.getItem('fr_music_favorites')) || [];
                 historyList = JSON.parse(localStorage.getItem('fr_music_history')) || [];
+                
+                // 載入儲存的音量
+                const savedVol = localStorage.getItem('fr_music_volume');
+                if (savedVol !== null) {
+                    audio.volume = parseFloat(savedVol);
+                    document.getElementById('volume-slider').value = audio.volume;
+                }
             } catch (e) {
                 playCounts = {};
                 favorites = [];
@@ -1206,25 +1261,28 @@
             localStorage.setItem('fr_music_history', JSON.stringify(historyList));
         }
 
+        // 升級：加入 try...catch 錯誤處理與 Fallback 機制
         async function loadMusicData() {
             try {
                 loadLocalData();
                 const response = await fetch(JSON_URL);
+                if (!response.ok) throw new Error('網路回應不正確');
                 playlist = await response.json();
-                
-                refreshUI();
-                
-                if (playlist.length > 0 && !audio.src) {
-                    const song = playlist[0];
-                    playerTitle.innerText = song.title;
-                    modalSongTitle.innerText = song.title;
-                    modalSongArtist.innerText = song.artist;
-                    playerThumb.src = song.cover;
-                    modalCover.src = song.cover;
-                    modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
-                }
             } catch (error) {
-                console.error('無法載入音樂資料:', error);
+                console.warn('無法從遠端載入 data.json，已自動切換為本地快取 Fallback 資料:', error);
+                playlist = FALLBACK_PLAYLIST;
+            }
+            
+            refreshUI();
+            
+            if (playlist.length > 0 && !audio.src) {
+                const song = playlist[0];
+                playerTitle.innerText = song.title;
+                modalSongTitle.innerText = song.title;
+                modalSongArtist.innerText = song.artist;
+                playerThumb.src = song.cover;
+                modalCover.src = song.cover;
+                modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
             }
         }
 
@@ -1292,6 +1350,21 @@
         }
         window.closeHistoryModal = function() { document.getElementById('history-modal').classList.remove('open'); }
 
+        window.openQueueModal = function() {
+            renderQueueList();
+            document.getElementById('queue-modal').classList.add('open');
+        }
+        window.closeQueueModal = function() { document.getElementById('queue-modal').classList.remove('open'); }
+
+        // 點擊 Modal 以外背景區域自動關閉視窗
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('open');
+                }
+            });
+        });
+
         function renderFavoritesList() {
             const container = document.getElementById('favorites-list-container');
             container.innerHTML = '';
@@ -1333,6 +1406,29 @@
                             </div>
                         </div>`;
                 }
+            });
+        }
+
+        function renderQueueList() {
+            const container = document.getElementById('queue-list-container');
+            container.innerHTML = '';
+            if (playlist.length === 0) {
+                container.innerHTML = `<div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 13px;">播放佇列為空</div>`;
+                return;
+            }
+            // 顯示目前播放清單中的所有歌曲，並標記當前播放項目
+            playlist.forEach((song, idx) => {
+                const isCurrent = idx === currentIndex;
+                container.innerHTML += `
+                    <div class="song-item" style="${isCurrent ? 'border-color: var(--accent); background: rgba(250,36,60,0.1);' : ''}" onclick="openModal(); playSong(${idx}); closeQueueModal();">
+                        <div class="song-info">
+                            <img src="${song.cover}" class="song-thumb" alt="封面">
+                            <div>
+                                <div class="song-title">${song.title} ${isCurrent ? '<span style="color:var(--accent); font-size:11px;">(播放中)</span>' : ''}</div>
+                                <div class="song-artist">${song.artist}</div>
+                            </div>
+                        </div>
+                    </div>`;
             });
         }
 
@@ -1503,6 +1599,56 @@
             });
         }
 
+        // 初始化 Web Audio API 與 Analyser / BassBoost 節點
+        function initWebAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+                sourceNode = audioCtx.createMediaElementSource(audio);
+                
+                analyserNode = audioCtx.createAnalyser();
+                analyserNode.fftSize = 64;
+
+                bassFilter = audioCtx.createBiquadFilter();
+                bassFilter.type = 'lowshelf';
+                bassFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
+                bassFilter.gain.setValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime);
+
+                // 串接音訊流：Source -> BassFilter -> Analyser -> Destination
+                sourceNode.connect(bassFilter);
+                bassFilter.connect(analyserNode);
+                analyserNode.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // 真實頻率等化條渲染迴圈
+        function updateVisualizer() {
+            if (!analyserNode || !isPlaying) return;
+            const dataArray = new Uint8Array(analyserNode.frequencyBinCount);
+            analyserNode.getByteFrequencyData(dataArray);
+
+            const bars = document.querySelectorAll('.v-bar');
+            bars.forEach((bar, i) => {
+                const val = dataArray[i] || 10;
+                const height = Math.max(8, (val / 255) * 44);
+                bar.style.height = height + 'px';
+            });
+            animationFrameId = requestAnimationFrame(updateVisualizer);
+        }
+
+        window.toggleBassBoost = function() {
+            isBassBoosted = !isBassBoosted;
+            const targetGain = isBassBoosted ? 12 : 0;
+            if (bassFilter && audioCtx) {
+                bassFilter.gain.linearRampToValueAtTime(targetGain, audioCtx.currentTime + 0.1);
+            }
+            const btn = document.getElementById('bass-boost-btn');
+            if (btn) btn.classList.toggle('active', isBassBoosted);
+        }
+
         window.playSong = function(index) {
             currentIndex = index;
             const song = playlist[currentIndex];
@@ -1512,9 +1658,13 @@
             addHistory(song.url);
 
             audio.src = song.url;
+            initWebAudio();
             audio.play();
             isPlaying = true;
             
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            updateVisualizer();
+
             const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
             const t = translations[savedLang] || translations['zh-TW'];
 
@@ -1538,18 +1688,21 @@
                 window.playSong(0);
                 return;
             }
+            initWebAudio();
             if (isPlaying) {
                 audio.pause();
                 isPlaying = false;
                 playIcon.innerHTML = playSvg;
                 modalPlayIcon.innerHTML = playSvg;
                 playerStatus.innerText = t.playerPaused;
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
             } else {
                 audio.play();
                 isPlaying = true;
                 playIcon.innerHTML = pauseSvg;
                 modalPlayIcon.innerHTML = pauseSvg;
                 playerStatus.innerText = t.playerPlaying;
+                updateVisualizer();
             }
         }
 
@@ -1596,12 +1749,6 @@
                 durationTimeEl.innerText = formattedDuration;
                 modalCurrentTimeEl.innerText = formattedCurrent;
                 modalDurationTimeEl.innerText = formattedDuration;
-
-                if (isPlaying) {
-                    document.querySelectorAll('.v-bar').forEach(bar => {
-                        bar.style.height = (Math.floor(Math.random() * 38) + 8) + 'px';
-                    });
-                }
             }
         });
 
@@ -1611,6 +1758,8 @@
         }
 
         let isDragging = false;
+        
+        // 使用 requestAnimationFrame 優化進度條拖曳流暢度
         function setupSeekBar(barId) {
             const bar = document.getElementById(barId);
             if(!bar) return;
@@ -1621,13 +1770,21 @@
                 return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
             };
 
-            const onStart = (e) => { if (!audio.duration) return; isDragging = true; updateProgressUI(getPercent(e) * 100); };
+            let currentPercent = 0;
+            const onStart = (e) => { 
+                if (!audio.duration) return; 
+                isDragging = true; 
+                currentPercent = getPercent(e);
+                updateProgressUI(currentPercent * 100); 
+            };
             const onMove = (e) => {
                 if (!isDragging || !audio.duration) return;
-                const percent = getPercent(e);
-                updateProgressUI(percent * 100);
-                currentTimeEl.innerText = formatTime(percent * audio.duration);
-                modalCurrentTimeEl.innerText = formatTime(percent * audio.duration);
+                currentPercent = getPercent(e);
+                requestAnimationFrame(() => {
+                    updateProgressUI(currentPercent * 100);
+                    currentTimeEl.innerText = formatTime(currentPercent * audio.duration);
+                    modalCurrentTimeEl.innerText = formatTime(currentPercent * audio.duration);
+                });
             };
             const onEnd = (e) => {
                 if (!isDragging || !audio.duration) return;
@@ -1648,7 +1805,26 @@
         setupSeekBar('progress-bar');
         setupSeekBar('modal-progress-bar');
 
-        window.setVolume = function(val) { audio.volume = val; }
+        window.setVolume = function(val) {
+            audio.volume = val;
+            localStorage.setItem('fr_music_volume', val);
+            if (val > 0 && isMuted) {
+                isMuted = false;
+            }
+        }
+
+        // 靜音切換功能
+        window.toggleMute = function() {
+            if (isMuted) {
+                audio.volume = previousVolume > 0 ? previousVolume : 0.5;
+                isMuted = false;
+            } else {
+                previousVolume = audio.volume;
+                audio.volume = 0;
+                isMuted = true;
+            }
+            document.getElementById('volume-slider').value = audio.volume;
+        }
 
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
