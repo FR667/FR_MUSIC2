@@ -576,7 +576,7 @@
             cursor: pointer;
         }
 
-        /* 全螢幕播放 Modal (支援左右分割：左側封面/等化器，右側歌詞檢視區) */
+        /* 全螢幕播放 Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -619,7 +619,7 @@
 
         .carplay-container {
             width: 92%;
-            max-width: 960px;
+            max-width: 760px;
             background: rgba(20, 20, 26, 0.75);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
@@ -719,7 +719,7 @@
         .carplay-song-title {
             font-size: 24px;
             font-weight: 800;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             letter-spacing: -0.5px;
             color: #ffffff;
             line-height: 1.2;
@@ -731,44 +731,16 @@
         .carplay-song-artist {
             font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 14px;
+            margin-bottom: 24px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* 動態同步歌詞容器 */
-        .synced-lyrics-box {
-            width: 100%;
-            height: 120px;
-            background: rgba(0, 0, 0, 0.3);
-            border: var(--liquid-glass-border);
-            border-radius: 14px;
-            padding: 12px 16px;
-            overflow-y: auto;
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            scroll-behavior: smooth;
-        }
-        .lyric-line {
-            font-size: 13px;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-            text-align: left;
-        }
-        .lyric-line.active {
-            font-size: 15px;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 12px var(--accent);
-        }
-
         .carplay-controls-area {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
             width: 100%;
         }
 
@@ -840,7 +812,6 @@
             .visualizer-bars-fullscreen { bottom: -24px; height: 32px; padding: 4px 10px; }
             .carplay-song-title { font-size: 18px; text-align: center; }
             .carplay-song-artist { font-size: 13px; text-align: center; margin-bottom: 8px; }
-            .synced-lyrics-box { height: 90px; }
             .carplay-right { width: 100%; align-items: center; }
             .carplay-controls { justify-content: space-around; width: 100%; gap: 0; }
             .close-modal-btn { top: 12px; right: 12px; width: 28px; height: 28px; font-size: 14px; }
@@ -868,6 +839,12 @@
         </div>
 
         <div class="header-actions">
+            <button class="glass-btn" onclick="document.getElementById('local-audio-input').click()" title="本地上傳音檔">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                <span>上傳</span>
+            </button>
+            <input type="file" id="local-audio-input" accept="audio/*" multiple style="display: none;" onchange="handleLocalFiles(this.files)">
+
             <button class="glass-btn" onclick="openPlaylistsModal()" title="自建播放清單">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                 <span>清單</span>
@@ -993,7 +970,7 @@
         </div>
     </div>
 
-    <!-- 全螢幕播放 Modal (支援動態同步歌詞) -->
+    <!-- 全螢幕播放 Modal -->
     <div class="modal-overlay" id="now-playing-modal">
         <div class="modal-blur-bg" id="modal-blur-bg"></div>
         <div class="carplay-container">
@@ -1013,12 +990,6 @@
             <div class="carplay-right">
                 <div class="carplay-song-title" id="modal-song-title">歌曲名稱</div>
                 <div class="carplay-song-artist" id="modal-song-artist">作者</div>
-
-                <!-- 動態同步歌詞顯示區 -->
-                <div class="synced-lyrics-box" id="synced-lyrics-box">
-                    <div class="lyric-line active">🎵 享受純淨專業串流音樂體驗 🎵</div>
-                    <div class="lyric-line">支援 LRC 時間軸同步歌詞自動滾動</div>
-                </div>
 
                 <div class="carplay-controls-area">
                     <div class="progress-container" style="width: 100%;">
@@ -1140,7 +1111,7 @@
         </div>
     </div>
 
-    <!-- 設定視窗 Modal -->
+    <!-- 設定視窗 Modal（包含 50 種背景主題風格） -->
     <div class="modal-overlay" id="settings-modal" style="background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);">
         <div class="carplay-container" style="max-width: 400px; display: block; text-align: left; max-height: 85vh; overflow-y: auto;">
             <button class="close-modal-btn" onclick="closeSettings()">×</button>
@@ -1157,7 +1128,7 @@
             </div>
 
             <div style="margin-bottom: 22px;">
-                <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景色系 (精選 30 種風格)</label>
+                <label id="lbl-bgtheme" style="display:block; font-size:13px; margin-bottom:5px; color:var(--text-secondary);">背景色系 (精選 50 種風格)</label>
                 <select id="setting-bg-theme" style="width:100%; padding:9px; background:#222; border:var(--liquid-glass-border); color:#fff; border-radius:8px; outline:none; font-size: 13px;">
                     <option value="#050505">1. 極黑沉浸 (預設)</option>
                     <option value="#0f172a">2. 深邃夜空藍</option>
@@ -1189,6 +1160,26 @@
                     <option value="#134e4a">28. 湖水深青</option>
                     <option value="#450a0a">29. 炙熱熔岩暗紅</option>
                     <option value="#292524">30. 暖調大地棕</option>
+                    <option value="#030712">31. 絕對暗灰黑</option>
+                    <option value="#312e81">32. 靛青霓虹</option>
+                    <option value="#831843">33. 深玫紅調</option>
+                    <option value="#701a75">34. 暗紫晶石</option>
+                    <option value="#581c87">35. 皇家紫殿</option>
+                    <option value="#1e3a8a">36. 帝國海軍</option>
+                    <option value="#1e40af">37. 皇家湛藍</option>
+                    <option value="#0f766e">38. 青瓷深綠</option>
+                    <option value="#115e59">39. 深邃湖水</option>
+                    <option value="#166534">40. 森林深處</option>
+                    <option value="#14532d">41. 墨綠松柏</option>
+                    <option value="#78350f">42. 琥珀蜜蠟</option>
+                    <option value="#9a3412">43. 沉香栗色</option>
+                    <option value="#881337">44. 勃艮第紅酒</option>
+                    <option value="#4c0519">45. 熟紅櫻桃</option>
+                    <option value="#3f6212">46. 暗橄欖綠</option>
+                    <option value="#365314">47. 苔蘚深綠</option>
+                    <option value="#52525b">48. 金屬鋅灰</option>
+                    <option value="#27272a">49. 碳化鎢鋼</option>
+                    <option value="#09090b">50. 曜石極黑</option>
                 </select>
             </div>
 
@@ -1199,7 +1190,7 @@
         </div>
     </div>
 
-    <audio id="audio-player" crossorigin="anonymous"></audio>
+    <audio id="audio-player" crossorigin="anonymous" playsinline></audio>
 
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -1214,7 +1205,7 @@
         let playCounts = {}; 
         let favorites = [];
         let historyList = [];
-        let customPlaylists = {}; // 自建清單 { 名單名稱: [songUrls...] }
+        let customPlaylists = {}; 
         let currentIndex = 0;
         let heroSongIndex = 0;
         let isPlaying = false;
@@ -1226,7 +1217,7 @@
         let isBassBoosted = false;
         let isSmartSurroundActive = false;
         let sleepTimerId = null;
-        let sleepTimerMode = null; // 'time' 或 'song'
+        let sleepTimerMode = null; 
         let totalListeningSeconds = 0;
 
         let audioCtx = null;
@@ -1261,7 +1252,7 @@
                 playerPaused: "已暫停",
                 settingsTitle: "網站設定",
                 lblLang: "語言 (Language)",
-                lblBgTheme: "背景色系 (30種風格)",
+                lblBgTheme: "背景色系 (50種風格)",
                 btnCancel: "取消",
                 btnSave: "儲存設定",
                 notFound: "找不到符合條件的歌曲",
@@ -1286,7 +1277,7 @@
                 playerPaused: "Paused",
                 settingsTitle: "Website Settings",
                 lblLang: "Language",
-                lblBgTheme: "Background Theme (30 Styles)",
+                lblBgTheme: "Background Theme (50 Styles)",
                 btnCancel: "Cancel",
                 btnSave: "Save Settings",
                 notFound: "No matching songs found",
@@ -1311,7 +1302,7 @@
                 playerPaused: "一時停止中",
                 settingsTitle: "サイト設定",
                 lblLang: "言語",
-                lblBgTheme: "背景テーマ (30種類)",
+                lblBgTheme: "背景テーマ (50種類)",
                 btnCancel: "キャンセル",
                 btnSave: "保存",
                 notFound: "一致する曲が見つかりませんでした",
@@ -1336,7 +1327,7 @@
                 playerPaused: "일시 정지",
                 settingsTitle: "사이트 설정",
                 lblLang: "언어",
-                lblBgTheme: "배경 테마 (30가지)",
+                lblBgTheme: "배경 테마 (50가지)",
                 btnCancel: "취소",
                 btnSave: "저장",
                 notFound: "일치하는 노래를 찾을 수 없습니다",
@@ -1417,15 +1408,40 @@
             localStorage.setItem('fr_music_history', JSON.stringify(historyList));
         }
 
+        // 本地音檔上傳處理功能
+        window.handleLocalFiles = function(files) {
+            if (!files || files.length === 0) return;
+            Array.from(files).forEach(file => {
+                const blobUrl = URL.createObjectURL(file);
+                // 簡易解析檔名為歌名與歌手
+                let nameWithoutExt = file.name.replace(/\.[^/.]+$/, "");
+                let parts = nameWithoutExt.split('-');
+                let title = parts.length > 1 ? parts[1].trim() : nameWithoutExt;
+                let artist = parts.length > 1 ? parts[0].trim() : "本地上傳";
+
+                const newSong = {
+                    title: title,
+                    artist: artist,
+                    cover: "https://i.ibb.co/dwx4Hq8x/Adobe-Express-file.jpg",
+                    url: blobUrl,
+                    isLocal: true
+                };
+                playlist.unshift(newSong);
+            });
+            refreshUI();
+            alert(`成功上傳並加入 ${files.length} 首本地音檔！`);
+        }
+
         async function loadMusicData() {
             try {
                 loadLocalData();
                 const response = await fetch(JSON_URL);
                 if (!response.ok) throw new Error('網路回應不正確');
-                playlist = await response.json();
+                const remoteList = await response.json();
+                playlist = [...remoteList, ...playlist];
             } catch (error) {
                 console.warn('無法從遠端載入 data.json，已自動切換為本地快取 Fallback 資料:', error);
-                playlist = FALLBACK_PLAYLIST;
+                playlist = [...FALLBACK_PLAYLIST, ...playlist];
             }
             
             refreshUI();
@@ -1518,7 +1534,6 @@
         }
         window.closeFavoritesModal = function() { document.getElementById('favorites-modal').classList.remove('open'); }
 
-        // 自建清單互動邏輯
         window.openPlaylistsModal = function() {
             renderPlaylistsModalContent();
             document.getElementById('playlists-modal').classList.add('open');
@@ -1592,7 +1607,6 @@
             });
         }
 
-        // 等化器 (EQ) 互動邏輯
         window.openEQModal = function() { document.getElementById('eq-modal').classList.add('open'); }
         window.closeEQModal = function() { document.getElementById('eq-modal').classList.remove('open'); }
 
@@ -1618,7 +1632,6 @@
             });
         }
 
-        // 睡眠定時器互動邏輯
         window.openTimerModal = function() { document.getElementById('timer-modal').classList.add('open'); }
         window.closeTimerModal = function() { document.getElementById('timer-modal').classList.remove('open'); }
 
@@ -1645,7 +1658,6 @@
             document.getElementById('timer-status-text').innerText = '目前未設定定時';
         }
 
-        // 聽歌數據統計儀表板 (Wrapped)
         window.openStatsModal = function() {
             renderStatsContent();
             document.getElementById('stats-modal').classList.add('open');
@@ -1655,8 +1667,6 @@
         function renderStatsContent() {
             const container = document.getElementById('stats-content');
             const totalHours = (totalListeningSeconds / 3600).toFixed(1);
-            
-            // 計算前5名歌手或歌曲
             const sortedSongs = [...playlist].sort((a,b) => (playCounts[b.url] || 0) - (playCounts[a.url] || 0)).slice(0, 5);
             
             let topHtml = '';
@@ -1783,7 +1793,6 @@
                 const originalIndex = playlist.findIndex(s => s.url === song.url);
                 const isLiked = favorites.includes(song.url);
                 
-                // 產生可加入清單的下拉選單選項
                 let playlistOptions = '';
                 Object.keys(customPlaylists).forEach(pName => {
                     playlistOptions += `<option value="${pName}">${pName}</option>`;
@@ -1892,7 +1901,6 @@
             });
         }
 
-        // 初始化 Web Audio API 與等化器與 Crossfade 漸強漸弱
         function initWebAudio() {
             if (!audioCtx) {
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1907,7 +1915,6 @@
                 bassFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
                 bassFilter.gain.setValueAtTime(isBassBoosted ? 12 : 0, audioCtx.currentTime);
 
-                // 建立 5 段圖形等化器 BiquadFilter 串鏈
                 const freqs = [60, 230, 910, 4000, 14000];
                 eqFilters = freqs.map(f => {
                     const filter = audioCtx.createBiquadFilter();
@@ -1924,7 +1931,6 @@
                     stereoPannerNode = null;
                 }
 
-                // 串接管線：Source -> Bass -> EQ[0]...EQ[4] -> Panner -> Analyser -> Destination
                 let lastNode = sourceNode;
                 lastNode.connect(bassFilter);
                 lastNode = bassFilter;
@@ -2007,7 +2013,6 @@
             if (btn) btn.classList.toggle('active', isBassBoosted);
         }
 
-        // 跨裝置 Media Session API 整合
         function updateMediaSession(song) {
             if ('mediaSession' in navigator) {
                 navigator.mediaSession.metadata = new MediaMetadata({
@@ -2018,6 +2023,7 @@
                         { src: song.cover, sizes: '96x96', type: 'image/jpeg' },
                         { src: song.cover, sizes: '128x128', type: 'image/jpeg' },
                         { src: song.cover, sizes: '192x192', type: 'image/jpeg' },
+                        { src: song.cover, sizes: '256x256', type: 'image/jpeg' },
                         { src: song.cover, sizes: '512x512', type: 'image/jpeg' }
                     ]
                 });
@@ -2029,79 +2035,43 @@
             }
         }
 
-        // Crossfade 漸入漸出無縫切換
         window.playSong = function(index) {
-            const executePlay = () => {
-                currentIndex = index;
-                const song = playlist[currentIndex];
-                if (!song) return;
-                
-                hasCountedCurrentSong = false;
-                addHistory(song.url);
-                updateMediaSession(song);
+            if (index < 0 || index >= playlist.length) return;
+            currentIndex = index;
+            const song = playlist[currentIndex];
 
-                audio.src = song.url;
-                initWebAudio();
-                
-                // 漸入 (Fade in)
-                audio.volume = 0;
-                audio.play();
-                let targetVol = parseFloat(document.getElementById('volume-slider').value) || 1;
-                let currentV = 0;
-                const fadeInInterval = setInterval(() => {
-                    currentV += 0.05;
-                    if(currentV >= targetVol) {
-                        audio.volume = targetVol;
-                        clearInterval(fadeInInterval);
-                    } else {
-                        audio.volume = currentV;
-                    }
-                }, 50);
-
+            initWebAudio();
+            audio.src = song.url;
+            audio.load();
+            
+            audio.play().then(() => {
                 isPlaying = true;
-                
-                if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                updateVisualizer();
-
-                const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
-                const t = translations[savedLang] || translations['zh-TW'];
-
-                playerTitle.innerText = song.title;
-                modalSongTitle.innerText = song.title;
-                modalSongArtist.innerText = song.artist;
-                playerThumb.src = song.cover;
-                modalCover.src = song.cover;
-                modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
-                playerStatus.innerText = t.playerPlaying;
-                
                 playIcon.innerHTML = pauseSvg;
                 modalPlayIcon.innerHTML = pauseSvg;
-            };
+                const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+                const t = translations[savedLang] || translations['zh-TW'];
+                playerStatus.innerText = t.playerPlaying;
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                updateVisualizer();
+            }).catch(err => {
+                console.error("播放失敗:", err);
+            });
 
-            // 如果本來正在播，先漸出 (Crossfade Fade out)
-            if(isPlaying && audio.volume > 0) {
-                let startVol = audio.volume;
-                let fadeOutInterval = setInterval(() => {
-                    startVol -= 0.05;
-                    if(startVol <= 0) {
-                        audio.volume = 0;
-                        clearInterval(fadeOutInterval);
-                        executePlay();
-                    } else {
-                        audio.volume = startVol;
-                    }
-                }, 30);
-            } else {
-                executePlay();
-            }
+            playerTitle.innerText = song.title;
+            modalSongTitle.innerText = song.title;
+            modalSongArtist.innerText = song.artist;
+            playerThumb.src = song.cover;
+            modalCover.src = song.cover;
+            modalBlurBg.style.backgroundImage = `url('${song.cover}')`;
+
+            hasCountedCurrentSong = false;
+            addHistory(song.url);
+            updateMediaSession(song);
         }
 
         window.togglePlayPause = function() {
-            const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
-            const t = translations[savedLang] || translations['zh-TW'];
-
             if (!audio.src && playlist.length > 0) {
-                window.playSong(0);
+                playSong(0);
                 return;
             }
             initWebAudio();
@@ -2110,184 +2080,143 @@
                 isPlaying = false;
                 playIcon.innerHTML = playSvg;
                 modalPlayIcon.innerHTML = playSvg;
+                const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+                const t = translations[savedLang] || translations['zh-TW'];
                 playerStatus.innerText = t.playerPaused;
-                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
             } else {
-                audio.play();
-                isPlaying = true;
-                playIcon.innerHTML = pauseSvg;
-                modalPlayIcon.innerHTML = pauseSvg;
-                playerStatus.innerText = t.playerPlaying;
-                updateVisualizer();
+                audio.play().then(() => {
+                    isPlaying = true;
+                    playIcon.innerHTML = pauseSvg;
+                    modalPlayIcon.innerHTML = pauseSvg;
+                    const savedLang = (JSON.parse(localStorage.getItem('fr_music_settings')) || {}).language || 'zh-TW';
+                    const t = translations[savedLang] || translations['zh-TW'];
+                    playerStatus.innerText = t.playerPlaying;
+                    updateVisualizer();
+                });
             }
         }
 
         window.nextSong = function() {
-            if(sleepTimerMode === 'song') {
-                togglePlayPause();
-                cancelSleepTimer();
-                return;
+            if (playlist.length === 0) return;
+            if (isShuffle) {
+                let nextIdx;
+                do {
+                    nextIdx = Math.floor(Math.random() * playlist.length);
+                } while (nextIdx === currentIndex && playlist.length > 1);
+                playSong(nextIdx);
+            } else {
+                let nextIdx = (currentIndex + 1) % playlist.length;
+                playSong(nextIdx);
             }
-            currentIndex = isShuffle ? Math.floor(Math.random() * playlist.length) : (currentIndex + 1) % playlist.length;
-            window.playSong(currentIndex);
         }
 
         window.prevSong = function() {
-            currentIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-            window.playSong(currentIndex);
-        }
-
-        window.skipTime = function(seconds) {
-            if (!audio.duration) return;
-            audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+            if (playlist.length === 0) return;
+            let prevIdx = (currentIndex - 1 + playlist.length) % playlist.length;
+            playSong(prevIdx);
         }
 
         window.toggleShuffle = function() {
             isShuffle = !isShuffle;
-            document.querySelectorAll('.shuffle-trigger').forEach(b => b.classList.toggle('active', isShuffle));
+            document.querySelectorAll('.shuffle-trigger').forEach(btn => btn.classList.toggle('active', isShuffle));
         }
 
         window.toggleRepeat = function() {
             isRepeat = !isRepeat;
-            document.querySelectorAll('.repeat-trigger').forEach(b => b.classList.toggle('active', isRepeat));
+            document.querySelectorAll('.repeat-trigger').forEach(btn => btn.classList.toggle('active', isRepeat));
         }
 
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration && !isDragging) {
-                const percent = (audio.currentTime / audio.duration) * 100;
-                updateProgressUI(percent);
-                
-                totalListeningSeconds += 1;
-                if(totalListeningSeconds % 10 === 0) {
-                    localStorage.setItem('fr_music_total_time', totalListeningSeconds);
-                }
-
-                if (percent >= 50 && !hasCountedCurrentSong) {
-                    hasCountedCurrentSong = true;
-                    const song = playlist[currentIndex];
-                    if (song) incrementPlayCount(song.url);
-                }
-
-                const formattedCurrent = formatTime(audio.currentTime);
-                const formattedDuration = formatTime(audio.duration);
-                
-                currentTimeEl.innerText = formattedCurrent;
-                durationTimeEl.innerText = formattedDuration;
-                modalCurrentTimeEl.innerText = formattedCurrent;
-                modalDurationTimeEl.innerText = formattedDuration;
-
-                // 模擬動態歌詞滾動與高亮
-                updateSyncedLyrics(audio.currentTime);
-            }
-        });
-
-        function updateSyncedLyrics(currentTime) {
-            const box = document.getElementById('synced-lyrics-box');
-            if(!box) return;
-            // 根據歌曲進度動態生成幾行精美同步歌詞展示
-            const lines = [
-                { time: 0, text: "🎵 享受純淨專業串流音樂體驗 🎵" },
-                { time: 5, text: "聆聽每一段旋律背后的故事" },
-                { time: 15, text: "讓音樂陪伴您渡過每個寧靜時刻" },
-                { time: 30, text: "AI 智慧環繞音響與等化器已全面啟動" },
-                { time: 50, text: "沉浸在無損音質與流暢的動態歌詞中" }
-            ];
-
-            let activeIdx = 0;
-            lines.forEach((l, idx) => {
-                if(currentTime >= l.time) activeIdx = idx;
-            });
-
-            box.innerHTML = lines.map((l, idx) => `
-                <div class="lyric-line ${idx === activeIdx ? 'active' : ''}">${l.text}</div>
-            `).join('');
+        window.skipTime = function(sec) {
+            if (!audio.src) return;
+            audio.currentTime = Math.min(Math.max(0, audio.currentTime + sec), audio.duration || 0);
         }
-
-        function updateProgressUI(percent) {
-            progressFilled.style.width = percent + '%';
-            modalProgressFilled.style.width = percent + '%';
-        }
-
-        let isDragging = false;
-        
-        function setupSeekBar(barId) {
-            const bar = document.getElementById(barId);
-            if(!bar) return;
-
-            const getPercent = (e) => {
-                const rect = bar.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-            };
-
-            let currentPercent = 0;
-            const onStart = (e) => { 
-                if (!audio.duration) return; 
-                isDragging = true; 
-                currentPercent = getPercent(e);
-                updateProgressUI(currentPercent * 100); 
-            };
-            const onMove = (e) => {
-                if (!isDragging || !audio.duration) return;
-                currentPercent = getPercent(e);
-                requestAnimationFrame(() => {
-                    updateProgressUI(currentPercent * 100);
-                    currentTimeEl.innerText = formatTime(currentPercent * audio.duration);
-                    modalCurrentTimeEl.innerText = formatTime(currentPercent * audio.duration);
-                });
-            };
-            const onEnd = (e) => {
-                if (!isDragging || !audio.duration) return;
-                isDragging = false;
-                const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-                const rect = bar.getBoundingClientRect();
-                audio.currentTime = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) * audio.duration;
-            };
-
-            bar.addEventListener('mousedown', onStart);
-            bar.addEventListener('mousemove', onMove);
-            bar.addEventListener('mouseup', onEnd);
-            bar.addEventListener('touchstart', onStart, {passive: true});
-            bar.addEventListener('touchmove', onMove, {passive: true});
-            bar.addEventListener('touchend', onEnd);
-        }
-
-        setupSeekBar('progress-bar');
-        setupSeekBar('modal-progress-bar');
 
         window.setVolume = function(val) {
-            audio.volume = val;
-            localStorage.setItem('fr_music_volume', val);
-            if (val > 0 && isMuted) {
-                isMuted = false;
-            }
+            audio.volume = parseFloat(val);
+            localStorage.setItem('fr_music_volume', audio.volume);
+            isMuted = (audio.volume === 0);
         }
 
         window.toggleMute = function() {
-            if (isMuted) {
-                audio.volume = previousVolume > 0 ? previousVolume : 0.5;
-                isMuted = false;
-            } else {
+            const volSlider = document.getElementById('volume-slider');
+            const muteBtn = document.getElementById('mute-btn');
+            if (!isMuted) {
                 previousVolume = audio.volume;
                 audio.volume = 0;
+                volSlider.value = 0;
                 isMuted = true;
+                muteBtn.style.color = 'var(--accent)';
+            } else {
+                audio.volume = previousVolume || 0.5;
+                volSlider.value = audio.volume;
+                isMuted = false;
+                muteBtn.style.color = '';
             }
-            document.getElementById('volume-slider').value = audio.volume;
         }
-
-        function formatTime(seconds) {
-            if (isNaN(seconds) || seconds <= 0) return "0:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return mins + ":" + (secs < 10 ? "0" : "") + secs;
-        }
-
-        audio.addEventListener('ended', () => {
-            if (isRepeat) { audio.play(); } else { window.nextSong(); }
-        });
 
         window.openModal = function() { document.getElementById('now-playing-modal').classList.add('open'); }
         window.closeModal = function() { document.getElementById('now-playing-modal').classList.remove('open'); }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (!audio.duration) return;
+            const current = audio.currentTime;
+            const duration = audio.duration;
+            const percent = (current / duration) * 100;
+
+            progressFilled.style.width = percent + '%';
+            modalProgressFilled.style.width = percent + '%';
+            currentTimeEl.innerText = formatTime(current);
+            durationTimeEl.innerText = formatTime(duration);
+            modalCurrentTimeEl.innerText = formatTime(current);
+            modalDurationTimeEl.innerText = formatTime(duration);
+
+            totalListeningSeconds += 1;
+            if (totalListeningSeconds % 10 === 0) {
+                localStorage.setItem('fr_music_total_time', totalListeningSeconds);
+            }
+
+            if (!hasCountedCurrentSong && current >= Math.min(15, duration / 2)) {
+                hasCountedCurrentSong = true;
+                if (playlist[currentIndex]) {
+                    incrementPlayCount(playlist[currentIndex].url);
+                }
+            }
+        });
+
+        audio.addEventListener('ended', () => {
+            if (isRepeat) {
+                audio.currentTime = 0;
+                audio.play();
+            } else {
+                if(sleepTimerMode === 'song') {
+                    if(isPlaying) togglePlayPause();
+                    cancelSleepTimer();
+                    return;
+                }
+                nextSong();
+            }
+        });
+
+        const setupProgressBar = (barId) => {
+            const bar = document.getElementById(barId);
+            if (!bar) return;
+            bar.addEventListener('click', (e) => {
+                if (!audio.duration) return;
+                const rect = bar.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                audio.currentTime = pos * audio.duration;
+            });
+        };
+        setupProgressBar('progress-bar');
+        setupProgressBar('modal-progress-bar');
     </script>
 </body>
 </html>
